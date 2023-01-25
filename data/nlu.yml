@@ -4,88 +4,197 @@ nlu:
 - intent: greet
   examples: |
     - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+    - ciao
+    - salve
+    - ciao carз
+    - buongiorno
+    - buonasera
+    - giorno
+    - ei caro
+    - ei ciao
+    - ciao bro
+    - buon giorno
+    - buona sera
+    - buon pomeriggio
+    - bella
+    - salve carissimo
 
 - intent: goodbye
   examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+    - ciao
+    - arrivederci
+    - a presto
+    - buonanotte
+    - a mai più
+    - vaffanculo
+    - buona giornata
+    - ci vediamo in giro
+    - addio
+    - a dopo
+    - grazie, ciao
+    - grazie, arrivederci
+    - grazie, a presto
+    - grazie, buonanotte
 
 - intent: affirm
   examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+    - si
+    - s
+    - siiiiiiii
+    - certamente
+    - va bene
+    - sicuramente
+    - corretto
+    - esatto
 
 - intent: deny
   examples: |
     - no
     - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+    - mai
+    - non credo
+    - non mi piace
+    - proprio no
+    - in realtà no
+    - non ci siamo
+    - assolutamente no
+    - no e poi no
+    - noooooo
 
 - intent: mood_great
   examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+    - sono felice
+    - mi sento bene
+    - sto bene grazie
+    - buona giornata a te!
+    - io, benissimo grazie!
+    - sto fantasticamente!
+    - sei troppo forte
+    - sei bravissimo
+    - lo adoro
+    - adoro
+    - sto na fragola
+    - volo
+    - spaziale
+    - mi inizia a piacere
+    - mi sento bene
+    - sto bene
+    - mai stato meglio
+    - mi sento fortunato
+    - tutto bene grazie
+    - giornata fantastica!
+    - che giornata meravigliosa
+    - che assist meraviglioso
+    - sono ispirato
+    - è perfetto
+    - fantastico
+    - mi sento una meraviglia
+    - sto veramente bene
+    - sto una favola
+    - sto bene grazie
+    - mi sento bellissimo
+    - sono felice
+    - oggi è un giorno fantastico
+    - sono così felice oggi
 
 - intent: mood_unhappy
   examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+    - sono triste
+    - non mi sento tanto bene
+    - sono un po' arrabbiato
+    - è stata una giornata orribile
+    - questo non va bene
+    - sto male
+    - sono malato
+    - sono vermente giù oggi
+    - non va bene
+    - irritante
+    - sono irritato
+    - non mi sento molto bene
+    - fa schifo!
+    - sto veramente male
+    - il peggior giorno della mia vita!
+    - mi fai stare male
+    - sto giù
+    - tutto va storto oggi
+    - mi sento uno schifo
+    - questo mi deprime
+    - sono depresso
+    - sono annoiato
+    - mi sto annoiando
+    - la vita è noiosa
+    - mi sento vuoto
+    - mi sento inutile
+    - meraviglioso
+    - depresso
+    - pesante
+    - mi sento un po' perso
+    - veramente triste
+    - non felice
+    - male
+    - molto male
+    - senza senso
+    - terribile
+    - no buono
+    - veramente triste
+    - così triste
+    - mi sento giù
+    - mi sento triste
+    - non sono ok oggi
+    - No good
+    - sono disperato
+    - mi sento veramente triste
+    - non è facile
+    - in realtà non sto bene
+    - non sono bravo
+    - sono da solo come al solito
+    - sto attraversando un periodo difficile
 
 - intent: bot_challenge
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - sei un bot?
+    - sei un umano?
+    - sto parlando con un bot?
+    - sto parlando con un umano?
+
+
+- intent: help
+  examples: |
+    - cosa posso chiederti?
+    - quali sono le tue funzioni?
+    - cosa fai?
+    - cosa dovrei chiederti?
+    - come puoi aiutarmi?
+    - ho bisogno del tuo aiuto
+    - help
+    - aiuto
+
+- intent: start
+  examples: |
+    - start
+    - open
+    - apri
+    - begin
+    - init
+
+- intent: stop
+  examples: |
+    - quit
+    - close
+    - chiudi
+    - stop
+
+- intent: out_of_scope
+  examples: |
+    - blablabla
+    - sadasdasdasd
+    - hmmmmm
+    - hahahahhaha
+    - sto dormendo
+    - che tempo fa?
+    - aeijfpvefvkèdlv
+    - lmlmlmlm
+    - uecwjeèqrpo
+    - aaaaaaaaaaaa
+    - pppppppppp
+    - kkkkkkk
