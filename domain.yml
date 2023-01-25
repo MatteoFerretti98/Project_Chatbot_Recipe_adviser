@@ -1,0 +1,173 @@
+version: '3.0'
+
+config:
+    store_entities_as_slots: true
+session_config:
+    session_expiration_time: 60
+    carry_over_slots_to_new_session: true
+
+intents:
+  - greet:
+        use_entities: true
+  - goodbye:
+        use_entities: true
+  - affirm:
+        use_entities: true
+  - deny:
+        use_entities: true
+  - mood_great:
+        use_entities: true
+  - mood_unhappy:
+        use_entities: true
+  - bot_challenge:
+        use_entities: true
+  - find_info:
+        use_entities: true
+  - find_capital:
+        use entities: true
+  - geo-curiosity:
+        use_entities: true
+  - geo-joke:
+        use_entities: true
+  - mood_bored:
+        use_entities: true
+  - help:
+        use_entities: true
+  - start:
+        use_entities: true
+  - stop:
+        use_entities: true
+  - out_of_scope:
+        use_entities: true
+
+entities:
+  - country
+slots:
+   country:
+     type: text
+     mappings:
+     - type: from_entity
+       entity: country
+     
+responses:
+
+  utter_start:
+    - text: Welcome visitor, i am GeoBot, i like travelling around
+        the world meeting people. I know most countries in the world,
+        i can teach you
+        something or make you laugh. For more help you can type "/help".
+    - text: Yo man, i am GeoBot, i like travelling around
+        the world meeting people.
+        I know most countries in the world, i can teach you
+        something or make you laugh.
+        For more help you can type "/help".
+  utter_stop:
+    - text: Goodbye, friend!
+  utter_greet:
+  - text: Hey! How are you?
+  utter_cheer_up:
+  - image: https://imgur.com/r/cats/vwaavvH
+    text: 'Here is something to cheer you up:'
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_goodbye:
+  - text: Bye
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_curiosity:
+  - text: Alaska is the Westernmost and Easternmost State in the U.S.
+  - text: There’s an Island Within a Lake On an Island Within a Lake
+        On an Island
+  - text: Mauna Kea is Taller Than Everest (Above the sea,
+        Mauna Kea only stands 13,796 feet in height.
+        But when you follow the mountain to its base at the bottom of the Pacific,
+        it's 32,808 feet — more than 3,000 feet taller than Everest.)
+  - text: Mt. Everest Isn't as Close to the Moon as Mt. Chimborazo
+  - text: Iceland is Growing 5 Centimeters Per Year
+  - text: The Pacific Ocean Is Shrinking
+  - text: A Good Morning is a Good Night in Parts of Russia
+  - text: Los Angeles is East of Reno, Nevada
+  - text: Mexico City Is Sinking by about 3.2 feet per year.
+  - text: Los Angeles and San Francisco Will Be Neighboring Cities
+  - text: There Are 7,100+ Islands in the Philippines
+  - text: Russia and China Touch 14 Countries Each
+  - text: Three Countries Are Landlocked by Just One Country
+  - text: The Sargasso Sea Has No Coasts
+  - text: Yellowstone National Park Is Home to a Supervolcano
+  - text: Sudan Has More Ancient Pyramids Than Egypt
+  - text: The Largest Rock on the Planet is in Australia
+  - text: The Oldest Continuously Inhabited City
+        in the World is Damascus
+  - text: Kentucky Has More Caves Than Any Other Place on Earth
+  - text: Istanbul Is the Only Major City Resting on Two Continents
+  - text: Alaska Is Home to the Largest Cities in America
+  - text: The Vast Majority of the Earth's Population Is in the North
+  - text: The Deepest Place on Earth Is in the
+        Pacific Ocean (nearly 35,814 feet)
+  - text: Russia's Transsiberian Railway Crosses 3,901 Bridges
+  - text: It Snows in the Sahara Desert
+  - text: Fly Over the Great Barrier Reef and You'll See a Heart
+  - text: Bangkok's Full Name is 163 Letters
+  - text: The Largest Concentration of Lakes is in Canada
+  - text: 42 Buildings in New York Have Their Own Zip Codes
+  - text: Two Islands 2.4 Miles Apart Are 20 Hours Apart
+  - text: You Can Hit Canada When You Drive South From Detroit
+  - text: 20% of Oxygen Is Produced by the Amazon
+  utter_interesting:
+  - text: i bet you didn't know that
+  - text: i would be surpised too
+  - text: i think it is amazing
+  - text: i am speechless too
+  utter_joke:
+  - text: Why are mountains the funniest place to travel to?
+        Because they’re hill areas!
+  - text: How does a fox know when it’s going to rain?
+        It checks the weather fur-cast!
+  - text: What’s the best thing about Switzerland?
+        I don’t know, but the flag is a big plus!
+  - text: Why do paper maps never win poker tournaments?
+        Because they always fold!
+  - text: Why did the Romanian stop reading at night?
+        They were giving the Bucharest!
+  - text: What did the sea say to the shore? Nothing, it just waved!
+  - text: What’s the coldest country? Chile!
+  - text: Which country is the slippiest? Greece!
+  - text: What is the fastest country in the world? Rush-a!
+  - text: What do you call a country populated entirely by donkeys?
+        An assassination!
+  utter_respjoke:
+  - text: ...don't hurt me please
+  - text: it isn'n funny? No? I know.
+  utter_send_help:
+  - text: You can ask me the capital of a country or general
+        information about it,
+        also i can tell you some interesting curiosity or some hilarious geo-joke.
+  utter_fallback:
+  - buttons:
+    - title: geo-joke
+      payload: /geo-joke
+    - title: geo-curiosity
+      payload: /geo-curiosity
+    text: Sorry! I couldn't get you! Please use one of the following options.
+
+actions:
+
+- utter_greet
+- utter_cheer_up
+- utter_did_that_help
+- utter_happy
+- utter_goodbye
+- utter_iamabot
+- utter_interesting
+- utter_curiosity
+- utter_joke
+- utter_send_help
+- utter_respjoke
+- action_find_info
+- utter_fallback
+- action_my_fallback
+- action_find_capital
+forms: {}
+e2e_actions: []
