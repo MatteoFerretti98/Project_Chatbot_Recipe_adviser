@@ -1,0 +1,23 @@
+version: "3.0"
+
+rules:
+
+- rule: Star the conversation
+  steps:
+  - intent: start
+  - action: utter_start
+
+- rule: End the conversation
+  steps:
+  - intent: stop
+  - action: utter_stop
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot

@@ -1,0 +1,129 @@
+version: "3.0"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+- story: find_information path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: find_info
+  - action: action_find_info
+  
+
+- story: find_information_short path
+  steps:
+  - intent: find_info
+  - action: action_find_info
+
+
+- story: find_capital path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: find_capital
+  - action: action_find_capital
+  
+- story: find_capital_short path
+  steps:
+  - intent: find_capital
+  - action: action_find_capital
+
+
+- story: joke path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: geo-joke
+  - action: utter_joke
+  - action: utter_respjoke
+
+- story: joke_short path
+  steps:
+  - intent: geo-joke
+  - action: utter_joke
+  - action: utter_respjoke
+
+- story: curiosity_short path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: geo-curiosity
+  - action: utter_curiosity
+  - action: utter_interesting
+
+- story: curiosity path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_send_help
+  - intent: geo-curiosity
+  - action: utter_curiosity
+  - action: utter_interesting
+
+  
+- story: joke_help path
+  steps:
+  - intent: help
+  - action: utter_send_help
+  - intent: greet
+  - action: utter_greet
+  - intent: geo-joke
+  - action: utter_joke
+  - action: utter_respjoke
+
+- story: find_capital_help path
+  steps:
+  - intent: help
+  - action: utter_send_help
+  - intent: greet
+  - action: utter_greet
+  - intent: find_capital
+  - action: action_find_capital
+
+- story: find_information_short path
+  steps:
+  - intent: help
+  - action: utter_send_help
+  - intent: find_info
+  - action: action_find_info
+
+
+- story: fallback_info path3
+  steps: 
+  - intent: greet
+  - action: utter_greet
+  - intent: help
+  - action: utter_send_help
+
+- story: out_of_scope path
+  steps:
+  - intent: out_of_scope
+  - action: action_my_fallback
