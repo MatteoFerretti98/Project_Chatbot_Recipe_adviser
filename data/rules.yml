@@ -1,16 +1,6 @@
-version: "3.0"
+version: "3.1"
 
 rules:
-
-- rule: Star the conversation
-  steps:
-  - intent: start
-  - action: utter_start
-
-- rule: End the conversation
-  steps:
-  - intent: stop
-  - action: utter_stop
 
 - rule: Say goodbye anytime the user says goodbye
   steps:
