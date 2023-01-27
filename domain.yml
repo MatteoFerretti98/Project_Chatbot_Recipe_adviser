@@ -28,7 +28,16 @@ responses:
   - text: Ciao sono Recipe Adviser, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! \n Per maggiori informazioni sul mio utilizzo digita il comando "/help".
 
   utter_greet:
-  - text: Ciao, come stai?
+  - text: "Ciao! Come stai?"
+  - text: "We, ciao!"
+  - text: "Ciao carissimo, come va?"
+  - text: "Salve, come va?"
+  - text: "We boss, che dici?"
+  - text: "Buongiorno signore, desidera?"
+  - text: "Weeee, come sta il mio umano preferito?"
+  - text: "Salve! Che dici?"
+  - text: "Oi! Tutto bene?"
+  - text: "Ma ciao, che mi racconti?"
 
   utter_cheer_up:
   - text: "Ecco qualcosa per tirarti su di morale:"
