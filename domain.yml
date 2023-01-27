@@ -61,12 +61,57 @@ actions:
 - action_my_fallback
 - action_ricercaNome
 
+
 entities:
-  - nome_ricetta
+- nome_ricetta
+- ingredienti_ricetta
+- portata_ricetta
+- num_persone_ricetta
+- luogo_ricetta
+
 
 slots:
   nome_ricetta:
     type: text
+    influence_conversation: true
     mappings:
     - type: from_entity
       entity: nome_ricetta
+  
+  ingredienti_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: ingredienti_ricetta
+
+  portata_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: portata_ricetta
+    
+  num_persone_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: num_persone_ricetta
+
+  luogo_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: luogo_ricetta
+
+
+
+forms:
+  ricetta_form:
+    required_slots:
+      - ingredienti_ricetta
+      - portata_ricetta
+      - num_persone_ricetta
+      - luogo_ricetta
