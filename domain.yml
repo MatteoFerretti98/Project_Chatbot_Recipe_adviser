@@ -15,6 +15,9 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - start
+  - stop
+  - out_of_scope
 
 responses:
   utter_greet:
@@ -35,3 +38,8 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+
+actions:
+
+- action_my_fallback
