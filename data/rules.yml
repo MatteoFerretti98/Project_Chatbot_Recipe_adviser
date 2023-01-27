@@ -11,3 +11,8 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Esegui l'azione per nome
+  steps:
+  - intent: ricercaPerNome
+  - action: action_ricercaNome

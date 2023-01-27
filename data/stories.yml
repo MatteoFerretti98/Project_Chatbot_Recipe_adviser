@@ -28,3 +28,10 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: ricerca ricetta per nome
+  steps:
+  - intent: start
+  - action: utter_start
+  - intent: ricercaPerNome
+  - action: action_ricercaNome

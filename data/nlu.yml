@@ -197,3 +197,69 @@ nlu:
     - aaaaaaaaaaaa
     - pppppppppp
     - kkkkkkk
+
+- intent: ricercaPerNome
+  examples: |
+    - Vorrei cercare la ricetta [pasta al pomodoro](nome_ricetta)
+    - [pomodor alla pugliese] (nome_ricetta)
+    - Il nome della ricetta è [vitello di rognone](nome_ricetta)
+    - la ricetta è [zucchine e rucola]
+
+- lookup: nome_ricetta
+  examples: |
+    - Pomodori Alla Pugliese
+    - Maccheroncini Al Prosciutto
+    - Bocconcini Di Manzo Con Verza Brasata E Carciofi Fritti
+    - Paella Alla Catalana (2)
+    - Crema Reale (2)
+    - Pappardelle Di Spinaci
+    - Pagnotta Alle Zucchine
+    - Orata Ai Ferri
+    - Melanzane Ghiotte
+    - Golden Cobbler
+    - Spaghetti Con Il Finocchio Selvatico
+    - Polpette Di Sgombro
+    - Ravioli Alla Napoletana
+    - Spaghetti Con Le Sarde
+    - Preludio
+    - Quarta Strada
+    - Vanda
+    - Salsa Matelote
+    - Insalata Ricca (3)
+    - Pan Di Zenzero All'arancia
+    - Panettoncino Variegato Con Idea Di Nutella
+    - Zucchine E Rucola
+    - "X, Y, Z Cocktail"
+    - Gamberetti Con Pisellini Saltati
+    - Marinata Al Vino Rosso
+    - Risotto Alla Milanese (5)
+    - Peperoni Sott'olio
+    - Baccalà E Farina Di Taralli Su Pesto Di Datterini
+    - Merluzzo Al Forno
+    - "Nodini Di Vitello Al Burro, Rosmarino E Salvia"
+    - Hokkaido Cocktail
+    - Oca Agrodolce
+    - Insalata Di Valeriana Ed Arance
+    - Succo Di Amarene
+    - Tortella De Ceba
+    - Caciucco
+    - Aceto Al Limone
+    - Polpette Di Ricotta Con Pomodoro
+    - Soufflé Di Tagliatelle (2)
+    - Filetti Di Sogliola Fritti
+    - Vinaigrette Alle Fragoline
+    - Sformato Di Cavolfiore E Due Pancette
+    - Zuppa Valtellinese
+    - Tequila Sale E Limone
+    - Arista Di Maiale Al Rosmarino Con Mele Caramellate E Mortadella
+    - Corona Alla Frutta
+    - Morosita
+    - Farfalle Al Salmone (2)
+    - Agnello In Crosta Di Olive Con Mozzarella Panata E Puntarelle
+    - Involtini Sfiziosi
+    - Pizza
+    - Pollo
+    - Ragu
+    - Dolce
+    - Pasta
+    - Formaggio

@@ -18,28 +18,46 @@ intents:
   - start
   - stop
   - out_of_scope
+  - ricercaPerNome:
+      use_entities: true
+
 
 responses:
+  utter_start:
+  - text:  Ciao mi chiamo Recipe Adviser, il miglior bot per la consulenza di ricette. Come posso esserti utile? \n Per maggiori informazioni sul mio utilizzo digita il comando "/help".
+  - text: Ciao sono Recipe Adviser, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! \n Per maggiori informazioni sul mio utilizzo digita il comando "/help".
+
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: Ciao, come stai?
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
+  - text: "Ecco qualcosa per tirarti su di morale:"
     image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+  - text: "Ti ha aiutato?"
 
   utter_happy:
-  - text: "Great, carry on!"
+  - text: "Ottimo, continua!"
 
   utter_goodbye:
-  - text: "Bye"
+  - text: "Arrivederci!"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  - text: "Sono un bot, realizzato tramite Rasa!"
 
 
 actions:
 
 - action_my_fallback
+- action_ricercaNome
+
+entities:
+  - nome_ricetta
+
+slots:
+  nome_ricetta:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: nome_ricetta
