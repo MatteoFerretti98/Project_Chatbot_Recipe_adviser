@@ -11,8 +11,8 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-
 import pandas as pd
+
 pd.set_option('display.max_colwidth', None)
 
 
@@ -63,8 +63,10 @@ class ActionRicercaPerNome(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         df = pd.read_csv('./actions/dataset_ricette/ricette.csv')
+        nome_completo = list(tracker.get_latest_entity_values('nome_ricetta'))
         nome = str(tracker.get_slot('nome_ricetta'))
-        print(nome)
+        for nomi in nome_completo:
+            print(nomi)
         ricette = df[df['nome'].str.lower().str.contains(nome.lower())]
         
         if len(ricette)==0 : 
