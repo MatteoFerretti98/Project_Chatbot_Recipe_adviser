@@ -29,9 +29,91 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story: ricerca ricetta per nome
+
+- story: storia_1
   steps:
-  - intent: start
-  - action: utter_start
-  - intent: ricercaPerNome
-  - action: action_ricercaNome
+  - intent: greet
+  - action: utter_greet
+  - intent: cerca_ricetta
+  - action: ricetta_form
+  - active_loop: ricetta_form
+  - slot_was_set:
+    - requested_slot: ingredienti_ricetta
+  - slot_was_set:
+    - ingredienti_ricetta: pomodoro basilico uovo
+  - slot_was_set:
+    - ingredienti_ricetta: pescespada
+  - slot_was_set:
+    - requested_slot: portata_ricetta
+  - slot_was_set:
+    - portata_ricetta: primo
+  - slot_was_set:
+    - portata_ricetta: carne
+  - slot_was_set:
+    - requested_slot: num_persone_ricetta
+  - slot_was_set:
+    - num_persone_ricetta: 4
+  - slot_was_set:
+    - num_persone_ricetta: 6
+  - slot_was_set:
+    - requested_slot: ingredienti_ricetta
+  - slot_was_set:
+    - ingredienti_ricetta: cavolfiore
+  - slot_was_set:
+    - ingredienti_ricetta: null
+  - slot_was_set:
+    - requested_slot: portata_ricetta
+  - slot_was_set:
+    - portata_ricetta: bevanda
+  - slot_was_set:
+    - portata_ricetta: null
+  - slot_was_set:
+    - requested_slot: num_persone_ricetta
+  - slot_was_set:
+    - num_persone_ricetta: tre
+  - slot_was_set:
+    - num_persone_ricetta: null
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_submit
+  - action: utter_ricetta_slots
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+
+- story: User interrupts the form and doesn't want to continue
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: cerca_ricetta
+  - action: ricetta_form
+  - active_loop: ricetta_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or: 
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+
+- story: storia_2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: cerca_ricetta
+  - action: ricetta_form
+  - active_loop: ricetta_form
+  - slot_was_set:
+    - requested_slot: ingredienti_ricetta
+  - intent: stop
+  - action: utter_ask_continue
+  - intent: stop
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - intent: goodbye
+  - action: utter_goodbye
+

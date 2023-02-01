@@ -198,68 +198,85 @@ nlu:
     - pppppppppp
     - kkkkkkk
 
-- intent: ricercaPerNome
-  examples: |
-    - Vorrei cercare la ricetta [pasta al pomodoro](nome_ricetta)
-    - [pomodor alla pugliese] (nome_ricetta)
-    - Il nome della ricetta è [vitello di rognone](nome_ricetta)
-    - la ricetta è [zucchine e rucola]
+    
 
-- lookup: nome_ricetta
+- intent: cerca_ricetta
   examples: |
-    - Pomodori Alla Pugliese
-    - Maccheroncini Al Prosciutto
-    - Bocconcini Di Manzo Con Verza Brasata E Carciofi Fritti
-    - Paella Alla Catalana (2)
-    - Crema Reale (2)
-    - Pappardelle Di Spinaci
-    - Pagnotta Alle Zucchine
-    - Orata Ai Ferri
-    - Melanzane Ghiotte
-    - Golden Cobbler
-    - Spaghetti Con Il Finocchio Selvatico
-    - Polpette Di Sgombro
-    - Ravioli Alla Napoletana
-    - Spaghetti Con Le Sarde
-    - Preludio
-    - Quarta Strada
-    - Vanda
-    - Salsa Matelote
-    - Insalata Ricca (3)
-    - Pan Di Zenzero All'arancia
-    - Panettoncino Variegato Con Idea Di Nutella
-    - Zucchine E Rucola
-    - "X, Y, Z Cocktail"
-    - Gamberetti Con Pisellini Saltati
-    - Marinata Al Vino Rosso
-    - Risotto Alla Milanese (5)
-    - Peperoni Sott'olio
-    - Baccalà E Farina Di Taralli Su Pesto Di Datterini
-    - Merluzzo Al Forno
-    - "Nodini Di Vitello Al Burro, Rosmarino E Salvia"
-    - Hokkaido Cocktail
-    - Oca Agrodolce
-    - Insalata Di Valeriana Ed Arance
-    - Succo Di Amarene
-    - Tortella De Ceba
-    - Caciucco
-    - Aceto Al Limone
-    - Polpette Di Ricotta Con Pomodoro
-    - Soufflé Di Tagliatelle (2)
-    - Filetti Di Sogliola Fritti
-    - Vinaigrette Alle Fragoline
-    - Sformato Di Cavolfiore E Due Pancette
-    - Zuppa Valtellinese
-    - Tequila Sale E Limone
-    - Arista Di Maiale Al Rosmarino Con Mele Caramellate E Mortadella
-    - Corona Alla Frutta
-    - Morosita
-    - Farfalle Al Salmone (2)
-    - Agnello In Crosta Di Olive Con Mozzarella Panata E Puntarelle
-    - Involtini Sfiziosi
-    - Pizza
-    - Pollo
-    - Ragu
-    - Dolce
-    - Pasta
-    - Formaggio
+    - Vorrei cercare una ricetta
+    - Cerco una ricetta
+    - Voglio ricetta
+    - Cerco ricetta
+    - Voglio una ricetta particolare
+    - Inizio ricerca ricetta
+
+
+- intent: informazioni_ricetta
+  examples: |
+    - Ricetta con questi ingredienti [pomodoro](ingredienti_ricetta)
+    - Cerca una ricetta con [pasta](ingredienti_ricetta)
+    - [passata di pomodoro](ingredienti_ricetta)
+    - Vorrei una ricetta con [amaretto di saronno](ingredienti_ricetta)
+    - Vorrei una ricetta con [Zuppa Di Pesce Surgelata](ingredienti_ricetta)
+    - Ricetta con [salmone](ingredienti_ricetta)
+    - Ricetta per un [primo](portata_ricetta)
+    - Cerca una ricetta [carne](portata_ricetta)
+    - [antipasto](portata_ricetta)
+    - Vorrei una ricetta da [contorno](portata_ricetta)
+    - Ricetta di una [bevanda](portata_ricetta)
+    - Ricetta per [4](num_persone_ricetta) persone
+    - Cerca una ricetta per [1](num_persone_ricetta) persona
+    - [2](num_persone_ricetta)
+    - Vorrei una ricetta da [3](num_persone_ricetta) persone
+    - Ricetta [5](num_persone_ricetta) persone
+    - Ricetta per [quattro](num_persone_ricetta) persone
+    - Cerca una ricetta per [una](num_persone_ricetta) persona
+    - [due](num_persone_ricetta) persone
+    - Vorrei una ricetta da [tre](num_persone_ricetta) persone
+    - Ricetta [cinque](num_persone_ricetta) persone
+
+
+- intent: request_recipe
+  examples: |
+    - cosa posso mangiare?
+    - mi puoi dare una ricetta?
+    - che cibo mi consigli?
+    - cosa potrei cucinare?
+    - Dimmi una ricetta con [pasta](ingredienti_ricetta)
+    - Puoi consigliarmi una ricetta con [uova](ingredienti_ricetta)
+    - Vorrei una ricetta per un [primo](portata_ricetta)
+    - Dimmi una ricetta con [pomodoro](ingredienti_ricetta) per un secondo di [carne](portata_ricetta)
+    - Dimmi una ricetta per un secondo di [pesce](portata_ricetta)
+    - Vorrei una ricetta con [pomodoro](ingredienti_ricetta)
+    - Vorrei una ricetta con [pomodoro](ingredienti_ricetta) per un [antipasto](portata_ricetta)
+    - Vorrei una ricetta per [4](num_persone_ricetta) persone
+    - Per [6](num_persone_ricetta) persone
+    - Vorrei una ricetta
+    - Vorrei qualcosa con [litchi](ingredienti_ricetta)
+    - qualcosa per una [bevanda](portata_ricetta)
+    - Come posso cucinare le [acciughe](ingredienti_ricetta)
+    - Che tipo di piatti hai per i [primi](portata_ricetta)
+    - Dammi la ricetta per [10](num_persone_ricetta) persone
+    - Trovami una ricetta con [agnello](ingredienti_ricetta) per [10](num_persone_ricetta) persone
+    - Trova un [contorno](portata_ricetta)
+    - Trova una ricetta per [1](num_persone_ricetta) persona
+
+
+
+- intent: change_choices
+  examples: |
+    - Si vorrei cambiare
+    - Vorrei cambiare qualcosa
+    - Vorrei ricominciare
+    - Posso cercare altro
+    - [ingredienti](cambia_ingredienti)
+    - Vorrei cambiare [tutto](cambia_tutto)
+    - [portata](cambia_portata)
+    - [numero_di_persone](cambia_num_persone)
+    - Voglio cambiare [portata](cambia_portata)
+    - Vorrei cambiare le mie scelte
+    - Ho cambiato idea
+    - Vorrei cambiare alcune cose
+
+
+lookup_tables: ingredienti_ricetta
+    ./lookup_table_ingredienti.txt

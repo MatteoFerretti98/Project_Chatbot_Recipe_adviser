@@ -12,7 +12,23 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
-- rule: Esegui l'azione per nome
+
+- rule: Activate Ricetta Form
   steps:
-  - intent: ricercaPerNome
-  - action: action_ricercaNome
+  - intent: cerca_ricetta
+  - action: ricetta_form
+  - active_loop: ricetta_form
+
+
+
+- rule: Interruption in Ricetta Form
+  condition:
+  # Condition that form is active.
+  - active_loop: ricetta_form
+  steps:
+  # This unhappy path handles the case of an intent `bot_challenge`.
+  - intent: bot_challenge
+  - action: utter_iamabot
+  # Return to form after handling the `bot_challenge` intent
+  - action: ricetta_form
+  - active_loop: ricetta_form

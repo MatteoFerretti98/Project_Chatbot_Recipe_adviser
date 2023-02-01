@@ -12,6 +12,7 @@ pipeline:
 # # See https://rasa.com/docs/rasa/tuning-your-model for more information.
   - name: WhitespaceTokenizer
   - name: RegexFeaturizer
+  - name: CRFEntityExtractor
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: CountVectorsFeaturizer
@@ -27,7 +28,7 @@ pipeline:
     epochs: 100
     constrain_similarities: true
   - name: FallbackClassifier
-    threshold: 0.6
+    threshold: 0.3
     ambiguity_threshold: 0.1
 
 # Configuration for Rasa Core.
@@ -38,9 +39,9 @@ policies:
 # # See https://rasa.com/docs/rasa/policies for more information.
   - name: MemoizationPolicy
   - name: RulePolicy
-    core_fallback_threshold: 0.6
-    core_fallback_action_name: "action_my_fallback"
-    enable_fallback_prediction: True
+    #core_fallback_threshold: 0.6
+    #core_fallback_action_name: "action_my_fallback"
+    #enable_fallback_prediction: True
   - name: UnexpecTEDIntentPolicy
     max_history: 5
     epochs: 100
@@ -48,3 +49,11 @@ policies:
     max_history: 5
     epochs: 100
     constrain_similarities: true
+
+  #- name: "MemoizationPolicy"
+  #  max_history: 5
+
+# enable logging of all events in this file
+#logging:
+#  level: "debug"
+#  capabilities: ["nlp"]

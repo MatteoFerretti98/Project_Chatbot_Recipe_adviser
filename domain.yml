@@ -18,6 +18,13 @@ intents:
   - start
   - stop
   - out_of_scope
+  - cerca_ricetta
+
+  - request_recipe
+  - change_choices
+
+  - informazioni_ricetta:
+      use_entities: true
   - ricercaPerNome:
       use_entities: true
 
@@ -51,15 +58,91 @@ responses:
 
   utter_goodbye:
   - text: "Arrivederci!"
+  - text: "Buona giornata!"
+  - text: "Buona fortuna con la ricetta!"
+
+  utter_out_of_scope:
+  - text: "Mi dispiace, ma non posso soddisfare questo tipo di richiesta."
+
+
+
 
   utter_iamabot:
   - text: "Sono un bot, realizzato tramite Rasa!"
 
+  utter_ask_dietary:
+  - text: "Segui qualche dieta?"
 
+  utter_submit:
+  - text: Ricerca ricetta in corso...
+
+  utter_ricetta_slots:
+  - text: Ecco le ricette con {ingredienti_ricetta} per la portata {portata_ricetta} per {num_persone_ricetta} che ho trovato!
+
+  utter_ask_continue:
+  - text: Sei sicuro di non voler aggiungere altro?
+
+  utter_ask_ingredienti_ricetta:
+  - text: Quale è l'ingrediente principale della ricetta che vuoi cercare?
+  - text: "Ok, quale è l'ingrediente principale della ricetta che vuoi cercare?"
+  - text: "Quale ingrediente vuoi che ci sia sicuramente nella tua ricetta?"
+  - text: "Per favore, dimmi pure l'ingrediente principale della tua ricetta"
+  
+  utter_ask_portata_ricetta:
+  - text: Per quale portata stai cercando la ricetta?
+  - text: "Ok, che tipo di portata ti interessa?"
+  - text: "Per quale tipo di portata vuoi che ti dia la ricetta?"
+  - text: "vuoi una ricetta per una portata specifica?"
+
+  utter_ask_num_persone_ricetta:
+  - text: Per quante persone ti serve questa ricetta?
+  - text: "Ok, per quante persone vuoi cercare la ricetta?"
+  - text: "Per quante persone vuoi che sia la ricetta che stai cercando?"
+  - text: "Per favore, dimmi pure il numero di persone per la tua ricetta"
+
+
+  utter_options:
+    - condition: 
+        - type: text
+          name: soddisfatto_o_no
+          value: affirm
+      text: "Perfetto! Contattami pure quando vuoi altri consigli per altre ricette!"
+    - condition:
+        - type: text
+          name: soddisfatto_o_no
+          value: deny
+      text: "Vuoi cambiare qualcosa o vuoi che ti mostri un'altra ricetta con le stesse caratteristiche?"
+    - condition:
+        - type: text
+          name: soddisfatto_o_no
+          value: null
+      text: "Non sono sicuro di ciò che hai scritto. Puoi scrivere 'si' o 'no'?"
+
+  utter_cambia_ricetta:
+    - condition:
+        - type: slot
+          name: account_type
+          value: "primary"
+      text: "Click [here](url/to/benefits) to make any changes to your current plan."
+    - condition:
+        - type: slot
+          name: account_type
+          value: "secondary"
+      text: "Only the primary account holder can make changes to the current plan."
+
+
+ 
 actions:
-
 - action_my_fallback
 - action_ricercaNome
+- utter_submit
+- utter_ricetta_slots
+- utter_greet
+- utter_goodbye
+- validate_ricetta_form
+- action_conferma_ricetta
+- utter_options
+- utter_cambia_ricetta
 
 
 entities:
@@ -67,45 +150,6 @@ entities:
 - ingredienti_ricetta
 - portata_ricetta
 - num_persone_ricetta
-- luogo_ricetta
-
-
-slots:
-  nome_ricetta:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: nome_ricetta
-  
-  ingredienti_ricetta:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: ingredienti_ricetta
-
-  portata_ricetta:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: portata_ricetta
-    
-  num_persone_ricetta:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: num_persone_ricetta
-
-  luogo_ricetta:
-    type: text
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      entity: luogo_ricetta
-
 
 
 forms:
@@ -114,4 +158,51 @@ forms:
       - ingredienti_ricetta
       - portata_ricetta
       - num_persone_ricetta
-      - luogo_ricetta
+
+
+slots:
+  nome_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+
+      
+  
+  ingredienti_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: ricetta_form
+            requested_slot: ingredienti_ricetta
+      
+
+  portata_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: ricetta_form
+            requested_slot: portata_ricetta
+
+      
+    
+  num_persone_ricetta:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: ricetta_form
+            requested_slot: num_persone_ricetta
+      
+
+
+
+
+
+
+  
