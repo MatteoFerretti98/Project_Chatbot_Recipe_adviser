@@ -12,7 +12,14 @@ pipeline:
 # # See https://rasa.com/docs/rasa/tuning-your-model for more information.
   - name: WhitespaceTokenizer
   - name: RegexFeaturizer
-  - name: CRFEntityExtractor
+  - name: "CRFEntityExtractor"
+    entities:
+    - name: ingredienti_ricetta
+      lookup_tables:
+      - name: ingredienti_ricetta
+        elements:
+          ./lookup_table_ingredienti.txt
+  
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: CountVectorsFeaturizer
