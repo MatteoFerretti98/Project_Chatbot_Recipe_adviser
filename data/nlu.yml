@@ -218,6 +218,7 @@ nlu:
     - Vorrei una ricetta con [amaretto di saronno](ingredienti_ricetta)
     - Vorrei una ricetta con [Zuppa Di Pesce Surgelata](ingredienti_ricetta)
     - Vorrei una ricetta con [chili in polvere](ingredienti_ricetta)
+    - Vorrei una ricetta con [amaretto di saronno](ingredienti_ricetta) per un [primo](portata_ricetta)
     - Ricetta con [salmone](ingredienti_ricetta)
     - Ricetta per un [primo](portata_ricetta)
     - Cerca una ricetta [carne](portata_ricetta)

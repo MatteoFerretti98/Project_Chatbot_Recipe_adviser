@@ -16,6 +16,7 @@ from rasa_sdk.events import SlotSet
 import pandas as pd
 import random
 import spacy
+import difflib
 
 # Load the spaCy model for the Italian language
 nlp = spacy.load("it_core_news_sm")
@@ -33,6 +34,14 @@ ingredienti_possibili = df_recipe["ing_principale"].tolist()
 
 ingredienti_possibili = list(set(ingredienti_possibili))
 ingredienti_possibili = all_lower(ingredienti_possibili)
+
+single_word_list = []
+for phrase in ingredienti_possibili:
+    words = phrase.split()
+    for word in words:
+        single_word_list.append(word)
+single_word_list = list(set(single_word_list))
+
 #with open("lookup_table_ingredienti.txt", "w") as file:
 #        for string in ingredienti_possibili:
 #            file.write(string + "\n")
@@ -49,6 +58,10 @@ portate_possibili = list(set(portate_possibili))
 portate_possibili = all_lower(portate_possibili)
 #print(portate_possibili)
 
+
+list_parole_da_escludere = df_recipe["tipo"].tolist()
+list_parole_da_escludere = list(set(list_parole_da_escludere))
+list_parole_da_escludere = all_lower(list_parole_da_escludere)
 
 
 
@@ -99,75 +112,67 @@ class ValidateRicettaForm(FormValidationAction):
         """Validate `ingredienti_ricetta` value."""
         
         
+        slot_ingredienti = ""
+        slot_portata = ""
+        slot_num_persone = ""
 
         doc = nlp(tracker.latest_message["text"])
-        
+
+
+
         list_ingredienti_word = []
-        #list_ingredienti_word_partial = []
+        list_parole_da_escludere.append('ricetta')
+        list_parole_da_escludere.append('ingrediente')
+        list_parole_da_escludere.append('ingredienti')
+        list_parole_da_escludere.append('persone')
+
         for token in doc:
-            if token.text.lower() == 'ricetta':
+            if token.text.lower() in list_parole_da_escludere:
+                if token.text.lower() in portate_possibili:
+                    slot_portata = token.text.lower()
                 continue
+            if token.pos_ == 'NUM':
+                slot_num_persone = token.text.lower()
             if token.pos_ == 'NOUN' or token.pos_ == 'PROPN' or token.pos_ == 'ADV' or token.pos_ == 'ADJ':
                 list_ingredienti_word.append(token.text.lower())
-            #if token.pos_ == 'NOUN' or token.pos_ == 'PROPN':
-            #    list_ingredienti_word_partial.append(token.text.lower())
 
-        
+        #Print della sintassi delle stringhe
         print("Lista delle stringhe che ci aiutano a trovare l'ingrediente: " + str(list_ingredienti_word))
         syntax_divisions = [(token.text, token.pos_) for token in doc]
         print("La divisione della sintassi: " + str(syntax_divisions))
         
         
-        '''
-        slot_value = ""
-        #flag = False
-        flag = True
-        for ingredienti_singoli in ingredienti_possibili:
-            if all(parole_singole in ingredienti_singoli for parole_singole in list_ingredienti_word):
-                print(ingredienti_singoli)
-                slot_value = ingredienti_singoli
-                #flag = True
-                flag = False
-                break
-        
-        if not flag:
-            for ingredienti_singoli in ingredienti_possibili:
-                if any(parole_singole in ingredienti_singoli for parole_singole in list_ingredienti_word_partial):
-                    slot_value = ingredienti_singoli
-                    #flag = True
-                    flag = False
-                    break
+        result = self.find_rows(list_ingredienti_word, df_recipe)
+        lista_ingredienti = list(set(result["ing_principale"].to_list()))
+        if len(lista_ingredienti) >0: slot_ingredienti = random.choice(lista_ingredienti)
+        else:
+            # CORREZIONE DELLE STRINGHE
+            lista_parole_corrette = []
+            for ingredienti_singoli_word in list_ingredienti_word:
+                
+                correct_word = difflib.get_close_matches(ingredienti_singoli_word, single_word_list, n=1, cutoff=0.6)
+                if correct_word:
+                    lista_parole_corrette.append(correct_word[0])
             
-            if not flag:
-        #if slot_value.lower() not in ingredienti_possibili:
-                intent = tracker.get_slot("intent")
-                if intent is None:
-                    intent = tracker.latest_message['intent'].get('name')
-        
-                if intent == "affirm":
-                    dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_value}.")
-                    return {"ingredienti_ricetta": slot_value}
-                elif intent == "deny":
-                    dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con questo ingrediente.")
-                    return {"ingredienti_ricetta": None}
-                else:
-                    return [SlotSet("intent", None), dispatcher.utter_message(text=f"Mi dispiace ma non ho capito.")]
+            result = self.find_rows(lista_parole_corrette, df_recipe)
+            lista_ingredienti = list(set(result["ing_principale"].to_list()))
+            if len(lista_ingredienti) >0: slot_ingredienti = random.choice(lista_ingredienti)
             else:
                 dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con questo ingrediente.")
                 return {"ingredienti_ricetta": None}
-        dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_value}.")
-        return {"ingredienti_ricetta": slot_value}
-        '''
 
-        slot_value = ""
-        result = self.find_rows(list_ingredienti_word, df_recipe)
-        lista_ingredienti = list(set(result["ing_principale"].to_list()))
-        if len(lista_ingredienti) >0: slot_value = random.choice(lista_ingredienti)
-        else:
-            dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con questo ingrediente.")
-            return {"ingredienti_ricetta": None}
-        dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_value}.")
-        return {"ingredienti_ricetta": slot_value}
+            
+        if not slot_portata == "" and slot_num_persone == "":
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti} per un {slot_portata}.")
+            return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata}
+        elif not slot_portata == "" and not slot_num_persone == "":
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone.")
+            return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata, "num_persone_ricetta": slot_num_persone}
+        elif slot_portata == "" and not slot_num_persone == "":
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per {slot_num_persone} persone.")
+            return {"ingredienti_ricetta": slot_ingredienti, "num_persone_ricetta": slot_num_persone}
+        dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}.")
+        return {"ingredienti_ricetta": slot_ingredienti}
 
     def validate_portata_ricetta(
         self,
