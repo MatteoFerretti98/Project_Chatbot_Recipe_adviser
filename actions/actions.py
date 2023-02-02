@@ -17,6 +17,9 @@ import pandas as pd
 import random
 import spacy
 import difflib
+from num2words import num2words
+
+
 
 # Load the spaCy model for the Italian language
 nlp = spacy.load("it_core_news_sm")
@@ -35,6 +38,7 @@ ingredienti_possibili = df_recipe["ing_principale"].tolist()
 ingredienti_possibili = list(set(ingredienti_possibili))
 ingredienti_possibili = all_lower(ingredienti_possibili)
 
+# CREAZIONE DELLA LISTA DELLE SINGOLE PAROLE PER LA EVENTUALE CORREZIONE DELLE STESSE
 single_word_list = []
 for phrase in ingredienti_possibili:
     words = phrase.split()
@@ -42,26 +46,37 @@ for phrase in ingredienti_possibili:
         single_word_list.append(word)
 single_word_list = list(set(single_word_list))
 
-#with open("lookup_table_ingredienti.txt", "w") as file:
-#        for string in ingredienti_possibili:
-#            file.write(string + "\n")
-#print(len(ingredienti_possibili))
 
+# POSSIBILI NUMERI DI PERSONE
+num_persone_possibili_parole = []
 num_persone_possibili_int = df_recipe["n_persone"].tolist()
 num_persone_possibili = [str(numero) for numero in num_persone_possibili_int]
 num_persone_possibili = list(set(num_persone_possibili))
-#print(num_persone_possibili)
+for num_persone in num_persone_possibili:
+    num_persone_possibili_parole.append(num2words(int(num_persone),lang="it"))
+num_persone_possibili = num_persone_possibili + num_persone_possibili_parole
 
 
+
+# POSSIBILI PORTATE
 portate_possibili = df_recipe["tipo"].tolist()
 portate_possibili = list(set(portate_possibili))
 portate_possibili = all_lower(portate_possibili)
-#print(portate_possibili)
 
 
+
+# PAROLE DA ESCLUDERE NELLA RICERCA DELL'INGREDIENTE
 list_parole_da_escludere = df_recipe["tipo"].tolist()
 list_parole_da_escludere = list(set(list_parole_da_escludere))
 list_parole_da_escludere = all_lower(list_parole_da_escludere)
+list_parole_da_escludere.append('ricetta')
+list_parole_da_escludere.append('ingrediente')
+list_parole_da_escludere.append('ingredienti')
+list_parole_da_escludere.append('persone')
+
+
+# LISTA VUOTA PER LE PAROLE TROVATE DALLA SINTASSI
+list_ingredienti_word = []
 
 
 
@@ -116,16 +131,11 @@ class ValidateRicettaForm(FormValidationAction):
         slot_portata = ""
         slot_num_persone = ""
 
+        # ANALISI NLP SINTASSI
         doc = nlp(tracker.latest_message["text"])
 
 
-
-        list_ingredienti_word = []
-        list_parole_da_escludere.append('ricetta')
-        list_parole_da_escludere.append('ingrediente')
-        list_parole_da_escludere.append('ingredienti')
-        list_parole_da_escludere.append('persone')
-
+        # RICERCA DELLE PAROLE CHIAVE (NOMI, AGGETTIVI ECC.) PER LA RICERCA DELL'INGREDIENTE, DELLA PORTATA E DEL NUMERO DI PERSONE
         for token in doc:
             if token.text.lower() in list_parole_da_escludere:
                 if token.text.lower() in portate_possibili:
@@ -136,12 +146,13 @@ class ValidateRicettaForm(FormValidationAction):
             if token.pos_ == 'NOUN' or token.pos_ == 'PROPN' or token.pos_ == 'ADV' or token.pos_ == 'ADJ':
                 list_ingredienti_word.append(token.text.lower())
 
-        #Print della sintassi delle stringhe
+        # PRINTI DELLA SINTASSI DELLE STRINGHE
         print("Lista delle stringhe che ci aiutano a trovare l'ingrediente: " + str(list_ingredienti_word))
         syntax_divisions = [(token.text, token.pos_) for token in doc]
         print("La divisione della sintassi: " + str(syntax_divisions))
         
         
+        # RICERCA DELL'INGREDIENTE
         result = self.find_rows(list_ingredienti_word, df_recipe)
         lista_ingredienti = list(set(result["ing_principale"].to_list()))
         if len(lista_ingredienti) >0: slot_ingredienti = random.choice(lista_ingredienti)
@@ -153,7 +164,8 @@ class ValidateRicettaForm(FormValidationAction):
                 correct_word = difflib.get_close_matches(ingredienti_singoli_word, single_word_list, n=1, cutoff=0.6)
                 if correct_word:
                     lista_parole_corrette.append(correct_word[0])
-            
+
+            # RICERCA DELL'INGREDIENTE CON LE STRINGHE CORRETTE
             result = self.find_rows(lista_parole_corrette, df_recipe)
             lista_ingredienti = list(set(result["ing_principale"].to_list()))
             if len(lista_ingredienti) >0: slot_ingredienti = random.choice(lista_ingredienti)
@@ -161,16 +173,19 @@ class ValidateRicettaForm(FormValidationAction):
                 dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con questo ingrediente.")
                 return {"ingredienti_ricetta": None}
 
-            
+        # SE L'UTENTE DA L'INGREDIENTE E LA PORTATA
         if not slot_portata == "" and slot_num_persone == "":
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti} per un {slot_portata}.")
             return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata}
+        # SE L'UTENTE DA L'INGREDIENTE LA PORTATA E IL NUMERO DI PERSONE
         elif not slot_portata == "" and not slot_num_persone == "":
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone.")
             return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata, "num_persone_ricetta": slot_num_persone}
+        # SE L'UTENTE DA L'INGREDIENTE E IL NUMERO DI PERSONE
         elif slot_portata == "" and not slot_num_persone == "":
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per {slot_num_persone} persone.")
             return {"ingredienti_ricetta": slot_ingredienti, "num_persone_ricetta": slot_num_persone}
+        # SE L'UTENTE DA L'INGREDIENTE
         dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}.")
         return {"ingredienti_ricetta": slot_ingredienti}
 
