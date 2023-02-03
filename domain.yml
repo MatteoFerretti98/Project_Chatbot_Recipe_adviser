@@ -19,10 +19,8 @@ intents:
   - stop
   - out_of_scope
   - cerca_ricetta
-
-  - request_recipe
   - change_choices
-
+  - cerca_nome
   - informazioni_ricetta:
       use_entities: true
   - ricercaPerNome:
@@ -65,6 +63,8 @@ responses:
   - text: "Mi dispiace, ma non posso soddisfare questo tipo di richiesta."
 
 
+  utter_cerca_per_nome:
+  - text: "Ciao, dimmi pure il nome della ricetta!"
 
 
   utter_iamabot:
@@ -144,6 +144,7 @@ actions:
 - action_conferma_ricetta
 - utter_options
 - utter_cambia_ricetta
+- utter_cerca_per_nome
 
 
 entities:

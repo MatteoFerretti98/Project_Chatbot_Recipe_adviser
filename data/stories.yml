@@ -86,6 +86,8 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
+  - intent: cerca_per_nome
+  - action: utter_cerca_per_nome
   - intent: ricercaPerNome
   - action: nome_ricetta_form
   - active_loop: nome_ricetta_form

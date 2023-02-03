@@ -305,6 +305,10 @@ nlu:
     - la ricetta è [coniglio](nome_ricetta)
     - vorrei la ricetta della [crepes Alle Mele](nome_ricetta)
 
+- intent: cerca_nome
+  examples: |
+    - Cerca nome ricetta
+
 lookup_tables: ingredienti_ricetta
     ./lookup_table_ingredienti.txt
 
