@@ -20,6 +20,12 @@ rules:
   - active_loop: ricetta_form
 
 
+- rule: Activate Ricetta Form per Nome
+  steps:
+  - intent: ricercaPerNome
+  - action: ricetta_form
+  - active_loop: ricetta_form
+
 
 - rule: Interruption in Ricetta Form
   condition:
