@@ -82,6 +82,28 @@ stories:
   - action: utter_goodbye
 
 
+- story: storia_nome_ricetta
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ricercaPerNome
+  - action: ricetta_form
+  - active_loop: ricetta_form
+  - slot_was_set:
+    - requested_slot: nome_ricetta
+  - slot_was_set:
+    - nome_ricetta: 
+  - slot_was_set:
+    - nome_ricetta: 
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: utter_submit
+  - action: utter_ricetta_slots
+  - intent: goodbye
+  - action: utter_goodbye
+
+
 
 - story: User interrupts the form and doesn't want to continue
   steps:
