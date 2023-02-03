@@ -23,8 +23,8 @@ rules:
 - rule: Activate Ricetta Form per Nome
   steps:
   - intent: ricercaPerNome
-  - action: ricetta_form
-  - active_loop: ricetta_form
+  - action: nome_ricetta_form
+  - active_loop: nome_ricetta_form
 
 
 - rule: Interruption in Ricetta Form

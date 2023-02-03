@@ -87,19 +87,18 @@ stories:
   - intent: greet
   - action: utter_greet
   - intent: ricercaPerNome
-  - action: ricetta_form
-  - active_loop: ricetta_form
+  - action: nome_ricetta_form
+  - active_loop: nome_ricetta_form
   - slot_was_set:
     - requested_slot: nome_ricetta
   - slot_was_set:
-    - nome_ricetta: 
+    - nome_ricetta: scarpaccia dolce
   - slot_was_set:
-    - nome_ricetta: 
+    - nome_ricetta: frittata
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
-  - action: utter_submit
-  - action: utter_ricetta_slots
+  - action: action_ricercaNome
   - intent: goodbye
   - action: utter_goodbye
 

@@ -255,6 +255,20 @@ class ValidateRicettaForm(FormValidationAction):
 
 
 
+class ValidateNomeRicettaForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_nome_ricetta_form"
+    
+    def validate_nome_ricetta(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict):
+        """Validate `nome_ricetta` value."""
+        print(slot_value)
+        dispatcher.utter_message(text=f"Va bene! Cercherò la ricetta {slot_value}.")
+        return {"nome_ricetta": slot_value}
 
 class ActionRicercaPerNome(Action):
     def name(self) -> Text:

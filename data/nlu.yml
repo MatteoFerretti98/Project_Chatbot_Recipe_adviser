@@ -297,6 +297,14 @@ nlu:
     - Ho cambiato idea
     - Vorrei cambiare alcune cose
 
+- intent: ricercaPerNome
+  examples: |
+    - Vorrei cercare la ricetta [pasta al pomodoro](nome_ricetta)
+    - [pane pugliese](nome_ricetta)
+    - Il nome della ricetta è [vitello di rognone](nome_ricetta)
+    - la ricetta è [coniglio](nome_ricetta)
+    - vorrei la ricetta della [crepes Alle Mele](nome_ricetta)
 
 lookup_tables: ingredienti_ricetta
     ./lookup_table_ingredienti.txt
+
