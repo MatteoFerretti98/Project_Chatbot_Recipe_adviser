@@ -22,19 +22,16 @@ rules:
 
 - rule: Activate Ricetta Form per Nome
   steps:
-  - intent: ricercaPerNome
+  - intent: cerca_per_nome
   - action: nome_ricetta_form
   - active_loop: nome_ricetta_form
-
-
-- rule: Interruption in Ricetta Form
-  condition:
-  # Condition that form is active.
-  - active_loop: ricetta_form
-  steps:
-  # This unhappy path handles the case of an intent `bot_challenge`.
-  - intent: bot_challenge
-  - action: utter_iamabot
-  # Return to form after handling the `bot_challenge` intent
-  - action: ricetta_form
-  - active_loop: ricetta_form
+  - slot_was_set:
+    - requested_slot: nome_ricetta
+  - slot_was_set:
+    - nome_ricetta: scarpaccia dolce
+  - slot_was_set:
+    - nome_ricetta: frittata
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_ricercaNome

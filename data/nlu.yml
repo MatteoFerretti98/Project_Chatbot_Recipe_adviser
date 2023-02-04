@@ -297,17 +297,35 @@ nlu:
     - Ho cambiato idea
     - Vorrei cambiare alcune cose
 
-- intent: ricercaPerNome
+- intent: cerca_per_nome
   examples: |
     - Vorrei cercare la ricetta [pasta al pomodoro](nome_ricetta)
     - [pane pugliese](nome_ricetta)
     - Il nome della ricetta è [vitello di rognone](nome_ricetta)
     - la ricetta è [coniglio](nome_ricetta)
     - vorrei la ricetta della [crepes Alle Mele](nome_ricetta)
+    - il piatto che cerco è [crepes Alle Mele](nome_ricetta)
+    - il piatto da cercare è [crepes Alle Mele](nome_ricetta)
+    - cerco la ricetta della [vitello](nome_ricetta)
+    - cerco la ricetta degli [spaghetti alle vongole](nome_ricetta)
+    - sono interessato alla ricetta del [bigne](nome_ricetta)
+    - mi interesserebbe al ricetta della [torta al cioccolato](nome_ricetta)
+    - mi daresti la ricetta del [riso in bianco](nome_ricetta)
+    - Ho intenzione di cucinare il [pollo arrosto](nome_ricetta)
+    - ricetta [torta al cioccolato](nome_ricetta)
+    - ricetta: [piadina](nome_ricetta)
 
 - intent: cerca_nome
   examples: |
     - Cerca nome ricetta
+    - Vorrei effettuare una ricerca per nome
+    - Cerca la ricetta per nome
+    - Cercami la ricetta in base al nome
+    - Vorrei cercare per nome la ricetta
+    - Cerca per nome la ricetta
+    - sono interessato alla ricerca in base al nome
+    - Mi piacerebbe cercare per nome
+    - Ho intenzione di cercare usando il nome
 
 lookup_tables: ingredienti_ricetta
     ./lookup_table_ingredienti.txt

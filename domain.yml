@@ -21,10 +21,12 @@ intents:
   - cerca_ricetta
   - change_choices
   - cerca_nome
+  - cerca_per_nome:
+      use_entities: true
+
   - informazioni_ricetta:
       use_entities: true
-  - ricercaPerNome:
-      use_entities: true
+
 
 
 responses:
@@ -63,7 +65,7 @@ responses:
   - text: "Mi dispiace, ma non posso soddisfare questo tipo di richiesta."
 
 
-  utter_cerca_per_nome:
+  utter_ask_nome_ricetta:
   - text: "Ciao, dimmi pure il nome della ricetta!"
 
 
@@ -145,6 +147,7 @@ actions:
 - utter_options
 - utter_cambia_ricetta
 - utter_cerca_per_nome
+- utter_ask_nome_ricetta
 
 
 entities:
@@ -171,7 +174,7 @@ slots:
     mappings:
       - type: from_text
         conditions:
-          - active_loop: ricetta_form
+          - active_loop: nome_ricetta_form
             requested_slot: nome_ricetta
 
       

@@ -73,6 +73,14 @@ list_parole_da_escludere.append('ingrediente')
 list_parole_da_escludere.append('ingredienti')
 list_parole_da_escludere.append('persone')
 
+def find_rows(strings, df, name_column):
+    if len(strings) != 0:
+        result = df
+        for string in strings:
+            result = result[result[name_column].str.lower().str.contains(string.lower())]
+    else:
+        result = []
+    return result
 
 class ActionHelloWorld(Action):
 
@@ -106,14 +114,7 @@ class ValidateRicettaForm(FormValidationAction):
         return "validate_ricetta_form"
     
 
-    def find_rows(self, strings, df):
-            if len(strings) != 0:
-                result = df
-                for string in strings:
-                    result = result[result["ing_principale"].str.lower().str.contains(string.lower())]
-            else:
-                result = []
-            return result
+    
 
     def validate_ingredienti_ricetta(
         self,
@@ -153,7 +154,7 @@ class ValidateRicettaForm(FormValidationAction):
         
         
         # RICERCA DELL'INGREDIENTE
-        result = self.find_rows(list_ingredienti_word, df_recipe)
+        result = find_rows(list_ingredienti_word, df_recipe,"ing_principale")
         
         if len(result) > 0: 
         
@@ -171,7 +172,7 @@ class ValidateRicettaForm(FormValidationAction):
 
                 # RICERCA DELL'INGREDIENTE CON LE STRINGHE CORRETTE
                 print(lista_parole_corrette)
-                result = self.find_rows(lista_parole_corrette, df_recipe)
+                result = self.find_rows(lista_parole_corrette, df_recipe,"ing_principale")
                 print(result)
                 lista_ingredienti = list(set(result["ing_principale"].to_list()))
                 if len(lista_ingredienti) >0: slot_ingredienti = random.choice(lista_ingredienti)
@@ -266,7 +267,38 @@ class ValidateNomeRicettaForm(FormValidationAction):
         tracker: Tracker,
         domain: DomainDict):
         """Validate `nome_ricetta` value."""
+
         print(slot_value)
+        # ANALISI NLP SINTASSI
+        doc = nlp(tracker.latest_message["text"])
+
+        
+        # LISTA VUOTA PER LE PAROLE TROVATE DALLA SINTASSI
+        list_ricetta_word = []
+
+        # RICERCA DELLE PAROLE CHIAVE (NOMI, AGGETTIVI ECC.) PER LA RICERCA DELL'INGREDIENTE, DELLA PORTATA E DEL NUMERO DI PERSONE
+        for token in doc:
+            if token.text.lower() in list_parole_da_escludere:
+                if token.text.lower() in portate_possibili:
+                    slot_value = token.text.lower()
+                continue
+            if token.pos_ == 'NOUN' or token.pos_ == 'PROPN' or token.pos_ == 'ADV' or token.pos_ == 'ADJ':
+                list_ricetta_word.append(token.text.lower())
+        
+        # PRINTI DELLA SINTASSI DELLE STRINGHE
+        print("Lista delle stringhe che ci aiutano a trovare la ricetta: " + str(list_ricetta_word))
+        syntax_divisions = [(token.text, token.pos_) for token in doc]
+        print("La divisione della sintassi: " + str(syntax_divisions))
+
+        # RICERCA DELL'INGREDIENTE
+        result = find_rows(list_ricetta_word, df_recipe,"nome")
+        
+        if len(result) > 0: 
+            lista_ricette = list(set(result["nome"].to_list()))
+            slot_value = random.choice(lista_ricette)
+        else:
+            dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta :(.")
+            return {"nome_ricetta": None}
         dispatcher.utter_message(text=f"Va bene! Cercherò la ricetta {slot_value}.")
         return {"nome_ricetta": slot_value}
 
@@ -300,7 +332,7 @@ class ActionRicercaPerNome(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         nome = str(tracker.get_slot('nome_ricetta'))
-        print(tracker.latest_message['entities'][0]['value'])
+        
         #for nomi in nome_completo:
         print(nome)
         ricette = df_recipe[df_recipe['nome'].str.lower().str.contains(nome.lower())]
