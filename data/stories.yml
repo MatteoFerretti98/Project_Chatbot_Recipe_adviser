@@ -2,6 +2,21 @@ version: "3.1"
 
 stories:
 
+- story: Starting story 
+  steps:
+  - intent: start
+  - action: utter_start
+
+- story: Helping story 
+  steps:
+  - intent: help
+  - action: utter_help
+
+- story: Stopping story 
+  steps:
+  - intent: stop
+  - action: utter_start
+
 - story: happy path
   steps:
   - intent: greet
@@ -32,8 +47,6 @@ stories:
 
 - story: storia_1
   steps:
-  - intent: greet
-  - action: utter_greet
   - intent: cerca_ricetta
   - action: ricetta_form
   - active_loop: ricetta_form
@@ -84,11 +97,7 @@ stories:
 
 - story: storia_nome_ricetta
   steps:
-  - intent: greet
-  - action: utter_greet
   - intent: cerca_nome
-  - action: utter_ask_nome_ricetta
-  - intent: cerca_per_nome
   - action: nome_ricetta_form
   - active_loop: nome_ricetta_form
   - slot_was_set:
@@ -98,16 +107,12 @@ stories:
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
-  - action: action_ricercaNome
-  - intent: goodbye
-  - action: utter_goodbye
+  - action: action_deactivate_loop
 
 
 
 - story: User interrupts the form and doesn't want to continue
   steps:
-  - intent: greet
-  - action: utter_greet
   - intent: cerca_ricetta
   - action: ricetta_form
   - active_loop: ricetta_form
@@ -119,10 +124,8 @@ stories:
   - action: action_deactivate_loop
   - active_loop: null
 
-- story: storia_2
+- story: storia_ricetta_form_stopped
   steps:
-  - intent: greet
-  - action: utter_greet
   - intent: cerca_ricetta
   - action: ricetta_form
   - active_loop: ricetta_form
@@ -130,7 +133,27 @@ stories:
     - requested_slot: ingredienti_ricetta
   - intent: stop
   - action: utter_ask_continue
+  - intent: deny
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+- story: storia_nome_ricetta_form_stopped
+  steps:
+  - intent: cerca_nome
+  - action: nome_ricetta_form
+  - active_loop: nome_ricetta_form
+  - slot_was_set:
+    - requested_slot: nome_ricetta
+  - slot_was_set:
+    - nome_ricetta: scarpaccia dolce
   - intent: stop
+  - action: utter_ask_continue
+  - intent: deny
   - action: action_deactivate_loop
   - active_loop: null
   - slot_was_set:

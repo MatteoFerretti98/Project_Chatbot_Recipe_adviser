@@ -2,6 +2,16 @@ version: "3.1"
 
 rules:
 
+- rule: Starting rule 
+  steps:
+  - intent: start
+  - action: utter_start
+
+- rule: Helping rule 
+  steps:
+  - intent: help
+  - action: utter_help
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
@@ -25,13 +35,3 @@ rules:
   - intent: cerca_per_nome
   - action: nome_ricetta_form
   - active_loop: nome_ricetta_form
-  - slot_was_set:
-    - requested_slot: nome_ricetta
-  - slot_was_set:
-    - nome_ricetta: scarpaccia dolce
-  - slot_was_set:
-    - nome_ricetta: frittata
-  - slot_was_set:
-    - requested_slot: null
-  - active_loop: null
-  - action: action_ricercaNome

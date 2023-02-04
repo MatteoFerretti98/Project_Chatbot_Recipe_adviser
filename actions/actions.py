@@ -72,6 +72,7 @@ list_parole_da_escludere.append('ricetta')
 list_parole_da_escludere.append('ingrediente')
 list_parole_da_escludere.append('ingredienti')
 list_parole_da_escludere.append('persone')
+list_parole_da_escludere.append('nome')
 
 def find_rows(strings, df, name_column):
     if len(strings) != 0:
@@ -82,18 +83,26 @@ def find_rows(strings, df, name_column):
         result = []
     return result
 
-class ActionHelloWorld(Action):
+def get_ingredienti(id_ricetta):
+        df = df_ingredients[df_ingredients["id_ricetta"] == id_ricetta]
+        df = df.drop(columns=["id_ricetta"])
+        out = df.to_string(index=False) + "\n \n"
+        out += f"Calorie complessive: {str(sum(df['calorie']))} \n \n"
+        return out
 
-    def name(self) -> Text:
-        return "action_hello_world"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        dispatcher.utter_message(text="Hello World!")
-
-        return []
+def buildResponse(df):
+        output = ""
+        for index, row in df.iterrows():
+            output += "  \n \n"
+            output += f"Nome: {row['nome']} \n"
+            output += f"Tipo di piatto: {row['tipo']} \n"
+            output += f"Ingrediente principale: {str(row['ing_principale'])} \n"
+            output += f"Numero di persone: {str(row['n_persone'])} \n"
+            output += f"Note: {str(row['note'])} \n"
+            output += f"Ingredienti:\n \n {get_ingredienti(row['id_ricetta'])} \n" 
+            output += f"Preparazione: {str(row['preparazione'])}"
+        
+        return output
 
 
 class MyFallback(Action):
@@ -300,38 +309,8 @@ class ValidateNomeRicettaForm(FormValidationAction):
             dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta :(.")
             return {"nome_ricetta": None}
         dispatcher.utter_message(text=f"Va bene! Cercherò la ricetta {slot_value}.")
-        return {"nome_ricetta": slot_value}
-
-class ActionRicercaPerNome(Action):
-    def name(self) -> Text:
-        return "action_ricercaNome"
-    
-    def get_ingredienti(self,id_ricetta):
-        df = df_ingredients[df_ingredients["id_ricetta"] == id_ricetta]
-        df = df.drop(columns=["id_ricetta"])
-        out = df.to_string(index=False) + "\n \n"
-        out += f"Calorie complessive: {str(sum(df['calorie']))} \n \n"
-        return out
-
-    def buildResponse(self,df):
-        output = ""
-        for index, row in df.iterrows():
-            output += "  \n \n"
-            output += f"Nome: {row['nome']} \n"
-            output += f"Tipo di piatto: {row['tipo']} \n"
-            output += f"Ingrediente principale: {str(row['ing_principale'])} \n"
-            output += f"Numero di persone: {str(row['n_persone'])} \n"
-            output += f"Note: {str(row['note'])} \n"
-            output += f"Ingredienti:\n \n {self.get_ingredienti(row['id_ricetta'])} \n" 
-            output += f"Preparazione: {str(row['preparazione'])}"
-        
-        return output
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        nome = str(tracker.get_slot('nome_ricetta'))
+        ########################
+        nome = slot_value
         
         #for nomi in nome_completo:
         print(nome)
@@ -342,7 +321,28 @@ class ActionRicercaPerNome(Action):
         else:
             if len(ricette) >= 2: 
                 ricette = ricette.sample(n=2)
-            output = self.buildResponse(ricette)
+            output = buildResponse(ricette)
     
         dispatcher.utter_message(text=output)
-        return []
+        ########################
+        return {"nome_ricetta": slot_value}
+
+
+
+
+class ActionCreazioneRicetta(Action):
+    def name(self) -> Text:
+        return "action_ricetta"
+    
+    def action_creazione_ricetta(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        form_name = tracker.active_form.get("name")
+        if form_name != None:
+            print(form_name)
+
+        return[]

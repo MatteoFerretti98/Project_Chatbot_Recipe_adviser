@@ -167,6 +167,7 @@ nlu:
     - ho bisogno del tuo aiuto
     - help
     - aiuto
+    - /help
 
 - intent: start
   examples: |
@@ -175,6 +176,7 @@ nlu:
     - apri
     - begin
     - init
+    - /start
 
 - intent: stop
   examples: |
@@ -182,6 +184,7 @@ nlu:
     - close
     - chiudi
     - stop
+    - /stop
 
 - intent: out_of_scope
   examples: |
@@ -322,6 +325,7 @@ nlu:
     - Cerca la ricetta per nome
     - Cercami la ricetta in base al nome
     - Vorrei cercare per nome la ricetta
+    - Vorrei cercare una ricetta per nome
     - Cerca per nome la ricetta
     - sono interessato alla ricerca in base al nome
     - Mi piacerebbe cercare per nome

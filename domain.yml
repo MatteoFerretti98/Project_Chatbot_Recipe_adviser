@@ -16,6 +16,7 @@ intents:
   - mood_unhappy
   - bot_challenge
   - start
+  - help
   - stop
   - out_of_scope
   - cerca_ricetta
@@ -27,12 +28,52 @@ intents:
   - informazioni_ricetta:
       use_entities: true
 
+  
+
+actions:
+  - action_my_fallback
+  - action_ricercaNome
+  - utter_submit
+  - utter_ricetta_slots
+  - utter_greet
+  - utter_help
+  - utter_goodbye
+  - validate_ricetta_form
+  - validate_nome_ricetta_form
+  - action_conferma_ricetta
+  - utter_options
+  - utter_cambia_ricetta
+  - utter_cerca_per_nome
+  - utter_ask_nome_ricetta
+  - action_ricetta
+
+
+entities:
+  - nome_ricetta
+  - ingredienti_ricetta
+  - portata_ricetta
+  - num_persone_ricetta
+
 
 
 responses:
   utter_start:
-  - text:  Ciao mi chiamo Recipe Adviser, il miglior bot per la consulenza di ricette. Come posso esserti utile? \n Per maggiori informazioni sul mio utilizzo digita il comando "/help".
-  - text: Ciao sono Recipe Adviser, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! \n Per maggiori informazioni sul mio utilizzo digita il comando "/help".
+  - text: "Ciao mi chiamo **Recipe Adviser**, il miglior bot per la consulenza di ricette. Come posso esserti utile? 
+          \n
+          \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
+
+  - text: "Ciao sono **Recipe Adviser**, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! 
+          \n
+          \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
+
+  utter_help:
+  - text: "Puoi utilizzare uno dei seguenti comandi per interagire con me:
+          \n
+          \n-**Vorrei cercare una ricetta**: per comporre la tua ricetta con ingredienti, tipo di portata e numero di persone.
+          \n
+          \n-**Vorrei cercare una ricetta per nome**: per cercare una ricetta direttamente con il suo nome.
+          \n
+          \n-**Dimmi una ricetta casuale**: per chiedermi di mandarti una ricetta a mia scelta tra le tante che conosco."
 
   utter_greet:
   - text: "Ciao! Come stai?"
@@ -65,8 +106,6 @@ responses:
   - text: "Mi dispiace, ma non posso soddisfare questo tipo di richiesta."
 
 
-  utter_ask_nome_ricetta:
-  - text: "Ciao, dimmi pure il nome della ricetta!"
 
 
   utter_iamabot:
@@ -82,7 +121,7 @@ responses:
   - text: Ecco le ricette con {ingredienti_ricetta} per la portata {portata_ricetta} per {num_persone_ricetta} che ho trovato!
 
   utter_ask_continue:
-  - text: Sei sicuro di non voler aggiungere altro?
+  - text: Sei sicuro di non voler interrompere la ricerca?
 
   utter_ask_ingredienti_ricetta:
   - text: Quale è l'ingrediente principale della ricetta che vuoi cercare?
@@ -101,6 +140,11 @@ responses:
   - text: "Ok, per quante persone vuoi cercare la ricetta?"
   - text: "Per quante persone vuoi che sia la ricetta che stai cercando?"
   - text: "Per favore, dimmi pure il numero di persone per la tua ricetta"
+
+
+  utter_ask_nome_ricetta:
+  - text: "Ciao, dimmi pure il nome della ricetta!"
+
 
 
   utter_options:
@@ -132,29 +176,6 @@ responses:
           value: "secondary"
       text: "Only the primary account holder can make changes to the current plan."
 
-
- 
-actions:
-- action_my_fallback
-- action_ricercaNome
-- utter_submit
-- utter_ricetta_slots
-- utter_greet
-- utter_goodbye
-- validate_ricetta_form
-- validate_nome_ricetta_form
-- action_conferma_ricetta
-- utter_options
-- utter_cambia_ricetta
-- utter_cerca_per_nome
-- utter_ask_nome_ricetta
-
-
-entities:
-- nome_ricetta
-- ingredienti_ricetta
-- portata_ricetta
-- num_persone_ricetta
 
 
 forms:
