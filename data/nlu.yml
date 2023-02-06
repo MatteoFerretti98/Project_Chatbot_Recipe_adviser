@@ -303,7 +303,6 @@ nlu:
 - intent: cerca_per_nome
   examples: |
     - Vorrei cercare la ricetta [pasta al pomodoro](nome_ricetta)
-    - [pane pugliese](nome_ricetta)
     - Il nome della ricetta è [vitello di rognone](nome_ricetta)
     - la ricetta è [coniglio](nome_ricetta)
     - vorrei la ricetta della [crepes Alle Mele](nome_ricetta)

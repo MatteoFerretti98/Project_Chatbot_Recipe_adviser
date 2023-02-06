@@ -34,7 +34,6 @@ actions:
   - action_my_fallback
   - action_ricercaNome
   - utter_submit
-  - utter_ricetta_slots
   - utter_greet
   - utter_help
   - utter_goodbye
@@ -46,6 +45,7 @@ actions:
   - utter_cerca_per_nome
   - utter_ask_nome_ricetta
   - action_ricetta
+  - action_azzera_slot
 
 
 entities:
@@ -116,9 +116,6 @@ responses:
 
   utter_submit:
   - text: Ricerca ricetta in corso...
-
-  utter_ricetta_slots:
-  - text: Ecco le ricette con {ingredienti_ricetta} per la portata {portata_ricetta} per {num_persone_ricetta} che ho trovato!
 
   utter_ask_continue:
   - text: Sei sicuro di non voler interrompere la ricerca?

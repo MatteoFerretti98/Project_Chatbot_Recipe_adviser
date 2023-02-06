@@ -118,6 +118,16 @@ class MyFallback(Action):
 
 
 
+class ResetSlot(Action):
+
+    def name(self):
+        return "action_azzera_slot"
+
+    def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        return {"ingredienti_ricetta": None, "portata_ricetta": None, "num_persone_ricetta": None}
+
+
+
 class ValidateRicettaForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_ricetta_form"
@@ -199,7 +209,7 @@ class ValidateRicettaForm(FormValidationAction):
             return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata}
         # SE L'UTENTE DA L'INGREDIENTE LA PORTATA E IL NUMERO DI PERSONE
         elif not slot_portata == "" and not slot_num_persone == "":
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone.")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicera ricetta in corso...")
             return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata, "num_persone_ricetta": slot_num_persone}
         # SE L'UTENTE DA L'INGREDIENTE E IL NUMERO DI PERSONE
         elif slot_portata == "" and not slot_num_persone == "":
@@ -233,8 +243,16 @@ class ValidateRicettaForm(FormValidationAction):
                 return {"portata_ricetta": None}
             else: 
                 slot_value = correct_word[0]
-            
-        dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_value}.")
+        
+        slot_portata = slot_value
+        slot_num_persone = tracker.get_slot("num_persone_ricetta")
+        slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
+
+        #dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_value}.")
+        if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicera ricetta in corso...")
+        else:
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_portata}.")
         return {"portata_ricetta": slot_value}
 
     def validate_num_persone_ricetta(
@@ -259,9 +277,18 @@ class ValidateRicettaForm(FormValidationAction):
             int(slot_value)
         except:
             slot_value = num_translator[slot_value]
+        
+        slot_num_persone = slot_value
+        slot_portata = tracker.get_slot("portata_ricetta")
+        slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
          
-        dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta per {slot_value} persone.")
-        return {"num_persone_ricetta": slot_value}
+        if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicera ricetta in corso...")
+        else:
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta per {slot_num_persone} persone.")
+        return {"num_persone_ricetta": slot_num_persone}
+
+
 
 
 
@@ -277,8 +304,9 @@ class ValidateNomeRicettaForm(FormValidationAction):
         domain: DomainDict):
         """Validate `nome_ricetta` value."""
 
-        print(slot_value)
+        #print(slot_value)
         # ANALISI NLP SINTASSI
+        nome_ricetta_slot = ""
         doc = nlp(tracker.latest_message["text"])
 
         
@@ -289,7 +317,7 @@ class ValidateNomeRicettaForm(FormValidationAction):
         for token in doc:
             if token.text.lower() in list_parole_da_escludere:
                 if token.text.lower() in portate_possibili:
-                    slot_value = token.text.lower()
+                    nome_ricetta_slot = token.text.lower()
                 continue
             if token.pos_ == 'NOUN' or token.pos_ == 'PROPN' or token.pos_ == 'ADV' or token.pos_ == 'ADJ':
                 list_ricetta_word.append(token.text.lower())
@@ -302,30 +330,14 @@ class ValidateNomeRicettaForm(FormValidationAction):
         # RICERCA DELL'INGREDIENTE
         result = find_rows(list_ricetta_word, df_recipe,"nome")
         
-        if len(result) > 0: 
+        if len(result) > 0:
             lista_ricette = list(set(result["nome"].to_list()))
-            slot_value = random.choice(lista_ricette)
+            nome_ricetta_slot = random.choice(lista_ricette)
         else:
-            dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta :(.")
+            dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta :'(")
             return {"nome_ricetta": None}
-        dispatcher.utter_message(text=f"Va bene! Cercherò la ricetta {slot_value}.")
-        ########################
-        nome = slot_value
-        
-        #for nomi in nome_completo:
-        print(nome)
-        ricette = df_recipe[df_recipe['nome'].str.lower().str.contains(nome.lower())]
-        
-        if len(ricette)==0 : 
-            output = "Non ci sono ricette con questo nome"
-        else:
-            if len(ricette) >= 2: 
-                ricette = ricette.sample(n=2)
-            output = buildResponse(ricette)
-    
-        dispatcher.utter_message(text=output)
-        ########################
-        return {"nome_ricetta": slot_value}
+        dispatcher.utter_message(text=f"Va bene! Cercherò la ricetta {nome_ricetta_slot}. \n\nRicera ricetta in corso...")
+        return {"nome_ricetta": nome_ricetta_slot}
 
 
 
@@ -334,15 +346,52 @@ class ActionCreazioneRicetta(Action):
     def name(self) -> Text:
         return "action_ricetta"
     
-    def action_creazione_ricetta(
-        self,
-        slot_value: Any,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        form_name = tracker.active_form.get("name")
-        if form_name != None:
-            print(form_name)
+        if tracker.get_slot("nome_ricetta") != None:
+            print("Il nome da cercare è: " + str(tracker.get_slot("nome_ricetta")))
+            
+            nome = tracker.get_slot("nome_ricetta")
+            
+            ricette = df_recipe[df_recipe['nome'].str.lower().str.contains(nome.lower())]
+            
+            if len(ricette)==0 : 
+                output = "Non ci sono ricette con questo nome."
+            else:
+                if len(ricette) >= 2: 
+                    ricette = ricette.sample(n=2)
+                output = buildResponse(ricette)
+        
+            dispatcher.utter_message(text=output)
+            
+
+        elif tracker.get_slot("ingredienti_ricetta") != None or tracker.get_slot("portata_ricetta") != None or tracker.get_slot("num_persone_ricetta") != None:
+            print("La ricetta da cercare è con ingredienti, portata o numero di persone")
+            ingredienti_slot = tracker.get_slot("ingredienti_ricetta")
+            portata_slot = tracker.get_slot("portata_ricetta")
+            num_persone_slot = tracker.get_slot("num_persone_ricetta")
+            try:
+                int(num_persone_slot)
+            except:
+                num_persone_slot = num_translator[num_persone_slot]
+            
+
+            ricette = pd.DataFrame()
+            
+            if tracker.get_slot("ingredienti_ricetta") != None:
+                ricette = df_recipe[df_recipe['ing_principale'].str.lower().str.contains(ingredienti_slot.lower())]
+            if tracker.get_slot("portata_ricetta") != None:
+                ricette = df_recipe[df_recipe['tipo'].str.lower().str.contains(portata_slot.lower())]
+            if tracker.get_slot("num_persone_ricetta") != None:
+                ricette = df_recipe[df_recipe['n_persone'].astype(str).str.contains(str(num_persone_slot))]
+            
+            if len(ricette)==0 : 
+                output = "Non ci sono ricette con queste caratteristiche."
+            else:
+                if len(ricette) >= 2: 
+                    ricette = ricette.sample(n=2)
+                output = buildResponse(ricette)
+        
+            dispatcher.utter_message(text=output)
 
         return[]

@@ -89,10 +89,7 @@ stories:
   - slot_was_set:
     - requested_slot: null
   - active_loop: null
-  - action: utter_submit
-  - action: utter_ricetta_slots
-  - intent: goodbye
-  - action: utter_goodbye
+  - action: action_ricetta
 
 
 - story: storia_nome_ricetta
@@ -104,10 +101,8 @@ stories:
     - requested_slot: nome_ricetta
   - slot_was_set:
     - nome_ricetta: scarpaccia dolce
-  - slot_was_set:
-    - requested_slot: null
   - active_loop: null
-  - action: action_deactivate_loop
+  - action: action_ricetta
 
 
 
@@ -121,7 +116,7 @@ stories:
   - or: 
     - intent: stop
     - intent: affirm
-  - action: action_deactivate_loop
+  - action: action_azzera_slot
   - active_loop: null
 
 - story: storia_ricetta_form_stopped
@@ -134,7 +129,7 @@ stories:
   - intent: stop
   - action: utter_ask_continue
   - intent: deny
-  - action: action_deactivate_loop
+  - action: action_azzera_slot
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
@@ -154,7 +149,7 @@ stories:
   - intent: stop
   - action: utter_ask_continue
   - intent: deny
-  - action: action_deactivate_loop
+  - action: action_azzera_slot
   - active_loop: null
   - slot_was_set:
     - requested_slot: null
