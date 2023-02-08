@@ -24,14 +24,50 @@ rules:
 
 
 - rule: Activate Ricetta Form
-  steps:
-  - intent: cerca_ricetta
-  - action: ricetta_form
+  condition:
+  # Condition that form is active.
   - active_loop: ricetta_form
-
-
-- rule: Activate Ricetta Form per Nome
   steps:
-  - intent: cerca_per_nome
-  - action: nome_ricetta_form
+  - action: ricetta_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_ricetta
+
+
+- rule: Activate Nome Ricetta Form
+  condition:
+  # Condition that form is active.
   - active_loop: nome_ricetta_form
+  steps:
+  - action: nome_ricetta_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_ricetta
+
+- rule: Stop Ricetta Form
+  condition:
+  - active_loop: ricetta_form
+  steps:
+    - intent: stop
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
+    - action: action_azzera_slot
+
+- rule: Stop Nome Ricetta Form
+  condition:
+  - active_loop: nome_ricetta_form
+  steps:
+    - intent: stop
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
+    - action: action_azzera_slot
+
+- rule: richiesta portata
+  steps:
+  - intent: ricercaPerPortata
+  - action: action_ricercaPortata
+  - action: utter_did_that_help

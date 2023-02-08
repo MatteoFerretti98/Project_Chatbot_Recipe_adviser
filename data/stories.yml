@@ -15,7 +15,7 @@ stories:
 - story: Stopping story 
   steps:
   - intent: stop
-  - action: utter_start
+  - action: action_azzera_slot
 
 - story: happy path
   steps:
@@ -86,9 +86,9 @@ stories:
     - num_persone_ricetta: tre
   - slot_was_set:
     - num_persone_ricetta: null
+  - active_loop: null
   - slot_was_set:
     - requested_slot: null
-  - active_loop: null
   - action: action_ricetta
 
 
@@ -96,63 +96,9 @@ stories:
   steps:
   - intent: cerca_nome
   - action: nome_ricetta_form
-  - active_loop: nome_ricetta_form
-  - slot_was_set:
-    - requested_slot: nome_ricetta
   - slot_was_set:
     - nome_ricetta: scarpaccia dolce
   - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
   - action: action_ricetta
-
-
-
-- story: User interrupts the form and doesn't want to continue
-  steps:
-  - intent: cerca_ricetta
-  - action: ricetta_form
-  - active_loop: ricetta_form
-  - intent: stop
-  - action: utter_ask_continue
-  - or: 
-    - intent: stop
-    - intent: affirm
-  - action: action_azzera_slot
-  - active_loop: null
-
-- story: storia_ricetta_form_stopped
-  steps:
-  - intent: cerca_ricetta
-  - action: ricetta_form
-  - active_loop: ricetta_form
-  - slot_was_set:
-    - requested_slot: ingredienti_ricetta
-  - intent: stop
-  - action: utter_ask_continue
-  - intent: deny
-  - action: action_azzera_slot
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - intent: goodbye
-  - action: utter_goodbye
-
-
-- story: storia_nome_ricetta_form_stopped
-  steps:
-  - intent: cerca_nome
-  - action: nome_ricetta_form
-  - active_loop: nome_ricetta_form
-  - slot_was_set:
-    - requested_slot: nome_ricetta
-  - slot_was_set:
-    - nome_ricetta: scarpaccia dolce
-  - intent: stop
-  - action: utter_ask_continue
-  - intent: deny
-  - action: action_azzera_slot
-  - active_loop: null
-  - slot_was_set:
-    - requested_slot: null
-  - intent: goodbye
-  - action: utter_goodbye
-

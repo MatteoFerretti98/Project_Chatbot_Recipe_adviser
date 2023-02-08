@@ -28,6 +28,8 @@ intents:
   - informazioni_ricetta:
       use_entities: true
 
+  - ricercaPerPortata:
+      use_entities: true  
   
 
 actions:
@@ -46,6 +48,8 @@ actions:
   - utter_ask_nome_ricetta
   - action_ricetta
   - action_azzera_slot
+  - action_ricercaPortata
+
 
 
 entities:
@@ -188,7 +192,7 @@ forms:
 slots:
   nome_ricetta:
     type: text
-    influence_conversation: true
+    influence_conversation: null
     mappings:
       - type: from_text
         conditions:
@@ -201,20 +205,16 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: ricetta_form
-            requested_slot: ingredienti_ricetta
+      - type: from_entity
+        entity: ingredienti_ricetta
       
 
   portata_ricetta:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: ricetta_form
-            requested_slot: portata_ricetta
+      - type: from_entity
+        entity: portata_ricetta
 
       
     
@@ -222,15 +222,5 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: ricetta_form
-            requested_slot: num_persone_ricetta
-      
-
-
-
-
-
-
-  
+      - type: from_entity
+        entity: num_persone_ricetta

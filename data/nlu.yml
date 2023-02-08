@@ -330,6 +330,18 @@ nlu:
     - Mi piacerebbe cercare per nome
     - Ho intenzione di cercare usando il nome
 
+- lookup: portata_ricetta
+  examples: |
+    - antipasto
+    - bevande
+    - carne
+    - contorno
+    - dessert
+    - pesce
+    - pollame
+    - primo
+    - salsa
+
 lookup_tables: ingredienti_ricetta
     ./lookup_table_ingredienti.txt
 
