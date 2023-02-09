@@ -44,6 +44,21 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
+- story: crea un menu
+  steps:
+  - intent: chiedi_menu
+  - action: utter_menu
+  - intent: scelta_portata
+  - action: action_crea_menu
+
+- story: crea un menu secondo
+  steps:
+  - intent: chiedi_menu
+  - action: utter_menu
+  - intent: scelta_portata
+  - intent: scelta_secondo
+  - action: action_crea_menu
+
 
 - story: storia_1
   steps:

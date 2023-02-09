@@ -161,6 +161,21 @@ list_parole_da_escludere.append('ingredienti')
 list_parole_da_escludere.append('persone')
 list_parole_da_escludere.append('nome')
 
+buttons = [{
+            "title": "Carne", 
+            "payload": '/scelta_secondo{"secondo":"Carne"}'
+            },
+           {
+           "title": "Pollame", 
+           "payload": '/scelta_secondo{"secondo":"Pollame"}'
+           },
+           {
+           "title": "Pesce", 
+           "payload": '/scelta_secondo{"secondo":"Pesce"}'
+           }
+          ]
+
+
 
 
 class MyFallback(Action):
@@ -209,6 +224,8 @@ class ValidateRicettaForm(FormValidationAction):
 
         # ANALISI NLP SINTASSI
         doc = nlp(tracker.latest_message["text"])
+        print(tracker.slots)
+        print(slot_value)
 
         print(tracker.latest_message["text"])
         # LISTA VUOTA PER LE PAROLE TROVATE DALLA SINTASSI
@@ -254,10 +271,10 @@ class ValidateRicettaForm(FormValidationAction):
                 result = filter_by_ingredients(lista_parole_corrette, filter)
                 print(result)
                 lista_ingredienti = list(set(result["ing_principale"].to_list()))
-                if len(lista_ingredienti) >0: slot_ingredienti = ", ".join(lista_ingredienti)
-                else:
-                    dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con gli ingredienti scelti.")
-                    return {"ingredienti_ricetta": None}
+            if len(lista_ingredienti) >0: slot_ingredienti = ", ".join(lista_ingredienti)
+            else:
+                dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con gli ingredienti scelti.")
+                return {"ingredienti_ricetta": None}
         else:   # se l'utente ha inserito un solo ingrediente, si ricerca su ingrediente principale
             # RICERCA DELL'INGREDIENTE
             result = find_rows(list_ingredienti_word, df_recipe,"ing_principale")
@@ -386,7 +403,7 @@ class ValidateNomeRicettaForm(FormValidationAction):
         # ANALISI NLP SINTASSI
         nome_ricetta_slot = ""
         doc = nlp(tracker.latest_message["text"])
-
+        print(tracker.slots)
         
         # LISTA VUOTA PER LE PAROLE TROVATE DALLA SINTASSI
         list_ricetta_word = []
@@ -420,12 +437,12 @@ class ValidateNomeRicettaForm(FormValidationAction):
 
 
 
-class ActionCreazioneRicetta(Action):
+class ActionCreazioneMenu(Action):
     def name(self) -> Text:
         return "action_ricetta"
     
     def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
+        print(tracker.slots)
         if tracker.get_slot("nome_ricetta") != None:
             print("Il nome da cercare è: " + str(tracker.get_slot("nome_ricetta")))
             
@@ -447,6 +464,7 @@ class ActionCreazioneRicetta(Action):
             print("La ricetta da cercare è con ingredienti, portata o numero di persone")
             ingredienti_slot = tracker.get_slot("ingredienti_ricetta")
             ricette = pd.DataFrame()
+            output = ""
             if ingredienti_slot != None:
                 ingredienti_slot_l = str(ingredienti_slot).split(", ")
                 if len(ingredienti_slot_l) == 1:
@@ -454,7 +472,12 @@ class ActionCreazioneRicetta(Action):
                     ricette = df_recipe[df_recipe['ing_principale'].str.lower().str.contains(ingredienti_slot.lower(),regex=False)]
                 else:
                     # ricerca di Simone
+                    slot_portata = tracker.get_slot("portata_ricetta")
+                    if slot_portata: filter = df_recipe[df_recipe['tipo'].str.lower().str.contains(slot_portata.lower())]
+                    else: filter = df_recipe
+                    print(ingredienti_slot_l)
                     ricette = filter_by_ingredients(ingredienti_slot_l, filter)
+                    print(ricette)
                 
             portata_slot = tracker.get_slot("portata_ricetta")
             num_persone_slot = tracker.get_slot("num_persone_ricetta")
@@ -466,8 +489,15 @@ class ActionCreazioneRicetta(Action):
             if tracker.get_slot("portata_ricetta") != None:
                 ricette = ricette[ricette['tipo'].str.lower().str.contains(portata_slot.lower(),regex=False)]
             if tracker.get_slot("num_persone_ricetta") != None:
-                ricette = ricette[ricette['n_persone'].astype(str).str.contains(str(num_persone_slot),regex=False)]
-                
+                ricette_n_persone = ricette[ricette['n_persone'].astype(str).str.contains(str(num_persone_slot),regex=False)]
+                if len(ricette_n_persone)>0 : 
+                    ricette = ricette_n_persone
+                else:
+                    output += "Non è stata trovata una ricetta con il numero di persone scelto. \n"
+                    output += "Proverò comunque a cercare una ricetta ;). \n"
+                    dispatcher.utter_message(text=output)
+                    output = ""
+            
             if len(ricette)==0 : 
                 output = "Non ci sono ricette con queste caratteristiche."
             else:
@@ -478,5 +508,34 @@ class ActionCreazioneRicetta(Action):
             dispatcher.utter_message(text=output)
             return [AllSlotsReset()]
                 
+        return [AllSlotsReset()]
+
+
+class Action(Action):
+    def name(self) -> Text:
+        return "action_crea_menu"
+    
+    def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(tracker.slots)
+        if tracker.get_slot("portate") != None:
+            portate = list(tracker.get_slot("portate"))
+            if "secondo" in portate:
+                portate.remove("secondo")
+                print(portate)
+                dispatcher.utter_message("Quale secondo vuoi?", buttons = buttons)
+                return [SlotSet("portate", portate)]
+            else:
+                ricette = []
+                if tracker.get_slot("secondo") != None:
+                    portate.append(tracker.get_slot("secondo"))
+                for portata in portate:
+                    ricette.append(df_recipe[df_recipe["tipo"].str.lower() == str(portata).lower()].sample(n=1))
+                response = ""
+                for ricetta in ricette:
+                    response += buildResponse(ricetta)
+                dispatcher.utter_message(text=response)
+
+            return [AllSlotsReset()]
+        
         return [AllSlotsReset()]
 

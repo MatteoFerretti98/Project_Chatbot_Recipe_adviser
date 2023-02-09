@@ -22,11 +22,18 @@ intents:
   - cerca_ricetta
   - change_choices
   - cerca_nome
+  - scelta_portata
+  - scelta_secondo
+  - chiedi_menu
   - cerca_per_nome:
-      use_entities: true
+      use_entities: 
+        - nome_ricetta
 
   - informazioni_ricetta:
-      use_entities: true
+      use_entities:
+       - ingredienti_ricetta
+       - portata_ricetta
+       - num_persone_ricetta
 
   - ricercaPerPortata:
       use_entities: true  
@@ -49,14 +56,22 @@ actions:
   - action_ricetta
   - action_azzera_slot
   - action_ricercaPortata
+  - utter_menu
+  - action_crea_menu
 
 
 
 entities:
-  - nome_ricetta
-  - ingredienti_ricetta
-  - portata_ricetta
-  - num_persone_ricetta
+  - nome_ricetta:
+      influence_conversation: true
+  - ingredienti_ricetta:
+      influence_conversation: true
+  - portata_ricetta:
+      influence_conversation: true
+  - num_persone_ricetta:
+      influence_conversation: true
+  - portate
+  - secondo
 
 
 
@@ -69,6 +84,28 @@ responses:
   - text: "Ciao sono **Recipe Adviser**, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! 
           \n
           \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
+  
+  utter_menu:
+  - text: "Quante sono le portate che vuoi inserire nel tuo menu?"
+    buttons:
+    - title: "antipasto primo secondo contorno dessert"
+      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo", "contorno", "dessert"]}}'
+    - title: "antipasto primo secondo contorno "
+      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo", "contorno"]}}'
+    - title: "antipasto primo secondo"
+      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo"]}}'
+    - title: "antipasto primo"
+      payload: '/scelta_portata{{"portate":["antipasto", "primo"]}}'
+    - title: "primo secondo contorno dessert"
+      payload: '/scelta_portata{{"portate":["primo", "secondo", "contorno", "dessert"]}}'
+    - title: "primo secondo contorno"
+      payload: '/scelta_portata{{"portate":["primo", "secondo", "contorno"]}}'
+    - title: "antipasto primo secondo dessert"
+      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo", "dessert"]}}'
+    - title: "primo secondo dessert"
+      payload: '/scelta_portata{{"portate":["primo", "secondo", "dessert"]}}'
+    - title: "primo secondo"
+      payload: '/scelta_portata{{"portate":["primo", "secondo"]}}'
 
   utter_help:
   - text: "Puoi utilizzare uno dei seguenti comandi per interagire con me:
@@ -190,14 +227,24 @@ forms:
       - nome_ricetta
 
 slots:
+  secondo:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: secondo
+
+  portate: 
+    type: list
+    mappings:
+      - type: from_entity
+        entity: portate
+
   nome_ricetta:
     type: text
-    influence_conversation: null
+    influence_conversation: true
     mappings:
-      - type: from_text
-        conditions:
-          - active_loop: nome_ricetta_form
-            requested_slot: nome_ricetta
+      - type: from_entity
+        entity: nome_ricetta
 
       
   

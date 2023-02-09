@@ -265,6 +265,10 @@ nlu:
     - Trovami una ricetta con [agnello](ingredienti_ricetta) per [10](num_persone_ricetta) persone
     - Trova un [contorno](portata_ricetta)
     - Trova una ricetta per [1](num_persone_ricetta) persona
+    - [pomodoro olive carota zucchine sedano](ingredienti_ricetta) 
+    - [pomodoro, olive, carota, zucchine, sedano](ingredienti_ricetta) 
+    - [cavolfiori patate](ingredienti_ricetta) 
+    - [insalata, formaggio](ingredienti_ricetta) 
 
 
 
@@ -329,6 +333,15 @@ nlu:
     - sono interessato alla ricerca in base al nome
     - Mi piacerebbe cercare per nome
     - Ho intenzione di cercare usando il nome
+
+- intent: chiedi_menu
+  examples: |
+    - Vorrei creare un menu
+    - Crea un menu
+    - Mi crei un menu?
+    - Vorrei che tu creassi un menu per me
+    - Mi aiuti a creare un menu?
+
 
 - lookup: portata_ricetta
   examples: |
