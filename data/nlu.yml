@@ -272,23 +272,6 @@ nlu:
 
 
 
-- intent: ricetta_random
-  examples: |
-    - cosa posso mangiare?
-    - mi puoi dare una ricetta?
-    - che cibo mi consigli?
-    - cosa potrei cucinare?
-    - Vorrei una ricetta random
-    - Vorrei una ricetta casuale
-    - Dammi una ricetta a caso
-    - Dammene una a caso
-    - Dimmene una casuale
-    - Dimmene una random
-    - Random
-    - A caso
-    
-
-
 - intent: change_choices
   examples: |
     - Si vorrei cambiare
@@ -320,6 +303,25 @@ nlu:
     - Ho intenzione di cucinare il [pollo arrosto](nome_ricetta)
     - ricetta [torta al cioccolato](nome_ricetta)
     - ricetta: [piadina](nome_ricetta)
+
+- intent: ricerca_random
+  examples: |
+    - Vorrei fare una ricerca casuale
+    - Ricerca random
+    - Vorrei ricercare in modo casuale
+    - Voglio una ricetta casuale
+    - random
+    - La voglio random
+    - cosa posso mangiare?
+    - mi puoi dare una ricetta?
+    - che cibo mi consigli?
+    - cosa potrei cucinare?
+    - Vorrei una ricetta random
+    - Dammi una ricetta a caso
+    - Dammene una a caso
+    - Dimmene una casuale
+    - Dimmene una random
+    - A caso
 
 - intent: cerca_nome
   examples: |

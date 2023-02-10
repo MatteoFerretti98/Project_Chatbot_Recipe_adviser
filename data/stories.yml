@@ -44,6 +44,11 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
+- story: cerca random
+  steps:
+  - intent: ricerca_random
+  - action: action_ricetta_random
+
 - story: crea un menu
   steps:
   - intent: chiedi_menu

@@ -20,7 +20,14 @@ import difflib
 from pandas import Series
 from num2words import num2words
 from rasa_sdk.events import AllSlotsReset
+import openai
+from serpapi import GoogleSearch
 
+
+
+openai.api_key = "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"
+
+dict_portate ={ "a":"antipasto","p":"primo","s":"secondo","c":"contorno","d": "dessert","ca":"Carne","po":"Pollame","pe":"Pesce"}
 
 # Load the spaCy model for the Italian language
 nlp = spacy.load("it_core_news_sm")
@@ -37,6 +44,26 @@ def word_in_string(word_list, string):
             count += 1
     return count
 
+
+def generate_image(nome_ricetta):
+    '''
+    response = openai.Image.create(
+        prompt="Photo of " + nome_ricetta,
+        n=1,
+        size="256x256",
+    )
+    return response["data"][0]["url"]
+    '''
+    params = {
+        "q": nome_ricetta,
+        "tbm": "isch",
+        "ijn": 0,
+        "api_key": "e328f794d5ac4118e260de595b26f0042e14b5418c0c4e60a2129b0446c33610"
+    }    
+    search = GoogleSearch(params)
+    link = search.get_dict()['images_results'][0]["original"]
+    return link
+
 def filter_by_ingredients(list_ingredienti_word,filter):    
     colonne = {'id_ricetta': [], 'nome': [], 'tipo': [], 'ing_principale': [], 'n_persone': [], 'note': [], 'preparazione': [], 'quantita': [], 'nome_ingrediente': [], 'calorie': []}
     filter2 = pd.DataFrame(colonne)   
@@ -52,7 +79,7 @@ def filter_by_ingredients(list_ingredienti_word,filter):
                 continue
                     
             if value: break
-        return filter2
+    return filter2
 
 def correct_words(list_ingredienti_word):
     # CORREZIONE DELLE STRINGHE
@@ -81,28 +108,28 @@ def find_rows(strings, df, name_column):
         result = []
     return result
 
-'''
-def get_ingredienti(id_ricetta):
-        df = df_ingredients[df_ingredients["id_ricetta"] == id_ricetta]
-        df = df.drop(columns=["id_ricetta"])
-        out = df.to_string(index=False) + "\n \n"
-        out += f"Calorie complessive: {str(sum(df['calorie']))} \n \n"
-        return out
-'''
 
-def buildResponse(df):
+def buildResponse(df,dispatcher):
         output = ""
         for index, row in df.iterrows():
+            dispatcher.utter_message(image=generate_image(row['nome']))
             output += "  \n \n"
-            output += f"Nome: {row['nome']} \n"
-            output += f"Tipo di piatto: {row['tipo']} \n"
-            output += f"Ingrediente principale: {str(row['ing_principale'])} \n"
-            output += f"Numero di persone: {str(row['n_persone'])} \n"
-            output += f"Note: {str(row['note'])} \n"
-            output += f"Ingredienti: " + row["nome_ingrediente"] + "\n"
-            output += f"Preparazione: {str(row['preparazione'])}"
-        
-        return output
+            output += f"<b>Nome:</b> {row['nome']} \n"
+            output += f"<b>Tipo di piatto:</b> {row['tipo']} \n"
+            output += f"<b>Ingrediente principale:</b> {str(row['ing_principale'])} \n"
+            output += f"<b>Numero di persone:</b> {str(int(row['n_persone']))} \n"
+            output += f"<b>Note:</b> {str(row['note'])} \n"
+            output += f"<b>Ingredienti:</b>\n"
+            nome_ingredienti = str(row["nome_ingrediente"]).replace("{","").replace("}","").split(",")
+            quantita = str(row["quantita"]).replace("{","").replace("}","").split(",")
+
+            for n,q in zip(nome_ingredienti,quantita):
+                output += q.strip() + " - " + n.strip() + "\n"
+
+            output += f"<b>Calorie totali:</b> " + str(row["calorie"]) + "\n"
+            output += f"<b>Preparazione:</b> {str(row['preparazione'])}"
+            dispatcher.utter_message(json_message={"text":output,"parse_mode":"HTML"})
+            output = ""
 
 def all_lower(my_list):
     return [x.lower() for x in my_list]
@@ -110,12 +137,6 @@ def all_lower(my_list):
 
 df_ingredients = pd.read_csv('./actions/dataset_ricette/ingredienti.csv')
 df_recipe = pd.read_csv('./actions/dataset_ricette/ricette.csv')
-
-
-df2 = df_ingredients.groupby('id_ricetta').apply(to_dict).reset_index()
-df_recipe = pd.merge(left = df_recipe, right = df2, on = 'id_ricetta', how = 'right')
-df_recipe = df_recipe.dropna(axis='index', how='any')
-
 
 ingredienti_possibili = df_recipe["ing_principale"].tolist()
 
@@ -163,15 +184,15 @@ list_parole_da_escludere.append('nome')
 
 buttons = [{
             "title": "Carne", 
-            "payload": '/scelta_secondo{"secondo":"Carne"}'
+            "payload": '/scelta_secondo{"secondo":"ca"}'
             },
            {
            "title": "Pollame", 
-           "payload": '/scelta_secondo{"secondo":"Pollame"}'
+           "payload": '/scelta_secondo{"secondo":"po"}'
            },
            {
            "title": "Pesce", 
-           "payload": '/scelta_secondo{"secondo":"Pesce"}'
+           "payload": '/scelta_secondo{"secondo":"pe"}'
            }
           ]
 
@@ -455,9 +476,8 @@ class ActionCreazioneMenu(Action):
             else:
                 if len(ricette) >= 2: 
                     ricette = ricette.sample(n=2)
-                output = buildResponse(ricette)
-        
-            dispatcher.utter_message(text=output)
+                buildResponse(ricette,dispatcher)
+
             return [AllSlotsReset()]
 
         elif tracker.get_slot("ingredienti_ricetta") != None or tracker.get_slot("portata_ricetta") != None or tracker.get_slot("num_persone_ricetta") != None:
@@ -503,9 +523,8 @@ class ActionCreazioneMenu(Action):
             else:
                 if len(ricette) >= 2: 
                     ricette = ricette.sample(n=2)
-                output = buildResponse(ricette)
+                buildResponse(ricette,dispatcher)
 
-            dispatcher.utter_message(text=output)
             return [AllSlotsReset()]
                 
         return [AllSlotsReset()]
@@ -519,8 +538,8 @@ class Action(Action):
         print(tracker.slots)
         if tracker.get_slot("portate") != None:
             portate = list(tracker.get_slot("portate"))
-            if "secondo" in portate:
-                portate.remove("secondo")
+            if "s" in portate:
+                portate.remove("s")
                 print(portate)
                 dispatcher.utter_message("Quale secondo vuoi?", buttons = buttons)
                 return [SlotSet("portate", portate)]
@@ -529,13 +548,22 @@ class Action(Action):
                 if tracker.get_slot("secondo") != None:
                     portate.append(tracker.get_slot("secondo"))
                 for portata in portate:
-                    ricette.append(df_recipe[df_recipe["tipo"].str.lower() == str(portata).lower()].sample(n=1))
-                response = ""
-                for ricetta in ricette:
-                    response += buildResponse(ricetta)
-                dispatcher.utter_message(text=response)
+                    ricette.append(df_recipe[df_recipe["tipo"].str.lower() == str(dict_portate[portata]).lower()].sample(n=1))
+                for ricetta in ricette:                    
+                    buildResponse(ricetta,dispatcher)
+                    
 
             return [AllSlotsReset()]
         
         return [AllSlotsReset()]
 
+class Action(Action):
+    def name(self) -> Text:
+        return "action_ricetta_random"
+    
+    def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(text="Va bene, ti fornirò una ricetta casuale.")
+        
+        buildResponse(df_recipe.sample(n=1),dispatcher)
+        
+        return [AllSlotsReset()]

@@ -25,6 +25,7 @@ intents:
   - scelta_portata
   - scelta_secondo
   - chiedi_menu
+  - ricerca_random
   - cerca_per_nome:
       use_entities: 
         - nome_ricetta
@@ -58,7 +59,7 @@ actions:
   - action_ricercaPortata
   - utter_menu
   - action_crea_menu
-
+  - action_ricetta_random
 
 
 entities:
@@ -77,35 +78,27 @@ entities:
 
 responses:
   utter_start:
-  - text: "Ciao mi chiamo **Recipe Adviser**, il miglior bot per la consulenza di ricette. Come posso esserti utile? 
-          \n
-          \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
+    - custom:
+        blocks:
+          - text: "Ciao mi chiamo <b>Recipe Adviser</b>, il miglior bot per la consulenza di ricette. Come posso esserti utile? 
+                   \n
+                   \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
+          - text: "Ciao sono <b>Recipe Adviser</b>, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! 
+                   \n
+                   \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
+          - parse_mode: "Markdown"
 
-  - text: "Ciao sono **Recipe Adviser**, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! 
-          \n
-          \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
-  
+
   utter_menu:
-  - text: "Quante sono le portate che vuoi inserire nel tuo menu?"
-    buttons:
-    - title: "antipasto primo secondo contorno dessert"
-      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo", "contorno", "dessert"]}}'
-    - title: "antipasto primo secondo contorno "
-      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo", "contorno"]}}'
-    - title: "antipasto primo secondo"
-      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo"]}}'
-    - title: "antipasto primo"
-      payload: '/scelta_portata{{"portate":["antipasto", "primo"]}}'
-    - title: "primo secondo contorno dessert"
-      payload: '/scelta_portata{{"portate":["primo", "secondo", "contorno", "dessert"]}}'
-    - title: "primo secondo contorno"
-      payload: '/scelta_portata{{"portate":["primo", "secondo", "contorno"]}}'
-    - title: "antipasto primo secondo dessert"
-      payload: '/scelta_portata{{"portate":["antipasto", "primo", "secondo", "dessert"]}}'
-    - title: "primo secondo dessert"
-      payload: '/scelta_portata{{"portate":["primo", "secondo", "dessert"]}}'
-    - title: "primo secondo"
-      payload: '/scelta_portata{{"portate":["primo", "secondo"]}}'
+  - buttons:
+    - payload: '/scelta_portata{{"portate":["a", "p", "s", "c", "d"]}}'
+      title: "antipasto primo secondo contorno dessert"
+    - payload: '/scelta_portata{{"portate":["p", "s", "d"]}}'
+      title: "primo secondo dessert"
+    - payload: '/scelta_portata{{"portate":["p", "s"]}}'
+      title: "primo secondo"
+    text: "Quali sono le portate che vuoi inserire nel tuo menu?"
+    button_type: "vertical"
 
   utter_help:
   - text: "Puoi utilizzare uno dei seguenti comandi per interagire con me:
@@ -147,8 +140,6 @@ responses:
   - text: "Mi dispiace, ma non posso soddisfare questo tipo di richiesta."
 
 
-
-
   utter_iamabot:
   - text: "Sono un bot, realizzato tramite Rasa!"
 
@@ -162,10 +153,10 @@ responses:
   - text: Sei sicuro di non voler interrompere la ricerca?
 
   utter_ask_ingredienti_ricetta:
-  - text: Quale è l'ingrediente principale della ricetta che vuoi cercare?
-  - text: "Ok, quale è l'ingrediente principale della ricetta che vuoi cercare?"
-  - text: "Quale ingrediente vuoi che ci sia sicuramente nella tua ricetta?"
-  - text: "Per favore, dimmi pure l'ingrediente principale della tua ricetta"
+  - text: Quali sono gli ingredienti della ricetta che vuoi cercare?
+  - text: "Ok, Quali sono gli ingredienti della ricetta che vuoi cercare?"
+  - text: "Quali ingredienti vuoi che ci siano sicuramente nella tua ricetta?"
+  - text: "Per favore, dimmi pure gli ingredienti della tua ricetta"
   
   utter_ask_portata_ricetta:
   - text: Per quale portata stai cercando la ricetta?
