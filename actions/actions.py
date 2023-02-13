@@ -46,14 +46,6 @@ def word_in_string(word_list, string):
 
 
 def generate_image(nome_ricetta):
-    '''
-    response = openai.Image.create(
-        prompt="Photo of " + nome_ricetta,
-        n=1,
-        size="256x256",
-    )
-    return response["data"][0]["url"]
-    '''
     params = {
         "q": "ricetta " + str(nome_ricetta),
         "tbm": "isch",
