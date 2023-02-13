@@ -551,7 +551,10 @@ class ActionCreazioneMenu(Action):
             else:
                 ricette = []
                 if tracker.get_slot("secondo") != None:
-                    portate.append(tracker.get_slot("secondo"))
+                    if "a" in portate:
+                        portate.insert(2, tracker.get_slot("secondo"))
+                    else:
+                        portate.insert(1, tracker.get_slot("secondo"))
                 for portata in portate:
                     ricette.append(df_recipe[df_recipe["tipo"].str.lower() == str(dict_portate[portata]).lower()].sample(n=1))
                 for ricetta in ricette:                    
