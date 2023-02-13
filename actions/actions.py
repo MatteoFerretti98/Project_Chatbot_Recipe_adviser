@@ -108,22 +108,23 @@ def find_rows(strings, df, name_column):
 def buildResponse(df,dispatcher):
         output = ""
         for index, row in df.iterrows():
+            t = "persone"
+            if row['n_persone'] == 1: t = "persona"
             dispatcher.utter_message(image=generate_image(row['nome']))
             output += "  \n \n"
-            output += f"<b>Nome:</b> {row['nome']} \n"
+            output += f"<b>{str(row['nome']).upper()}</b> \n \n"
             output += f"<b>Tipo di piatto:</b> {row['tipo']} \n"
             output += f"<b>Ingrediente principale:</b> {str(row['ing_principale'])} \n"
-            output += f"<b>Numero di persone:</b> {str(int(row['n_persone']))} \n"
-            output += f"<b>Note:</b> {str(row['note'])} \n"
+            output += f"Dosaggio per <b>{str(int(row['n_persone']))} {t} </b>\n"
             output += f"<b>Ingredienti:</b>\n"
             nome_ingredienti = str(row["nome_ingrediente"]).replace("{","").replace("}","").split(",")
             quantita = str(row["quantita"]).replace("{","").replace("}","").split(",")
 
             for n,q in zip(nome_ingredienti,quantita):
                 output += q.strip() + " - " + n.strip() + "\n"
-
-            output += f"<b>Calorie totali:</b> " + str(row["calorie"]) + "\n"
-            output += f"<b>Preparazione:</b> {str(row['preparazione'])}"
+            output += f"<b>Calorie totali:</b> " + str(row["calorie"]) + " cal \n"
+            output += f"<b>Procedimento:</b> {str(row['preparazione'])} \n"
+            output += f"<b>Note aggiuntive:</b> {str(row['note'])} \n"
             dispatcher.utter_message(json_message={"text":output,"parse_mode":"HTML"})
             output = ""
 
@@ -267,6 +268,7 @@ class ValidateRicettaForm(FormValidationAction):
         print("Lista delle stringhe che ci aiutano a trovare l'ingrediente: " + str(list_ingredienti_word))
         syntax_divisions = [(token.text, token.pos_) for token in doc]
         print("La divisione della sintassi: " + str(syntax_divisions))
+        list_ingredienti_word = list(set(map(str.lower, slot_value + list_ingredienti_word)))
         
         if len(list_ingredienti_word) > 1: # se l'utente ha inserito più di un ingrediente
             # ricerca tra tutti gli ingredienti
@@ -288,7 +290,7 @@ class ValidateRicettaForm(FormValidationAction):
                 result = filter_by_ingredients(lista_parole_corrette, filter)
                 print(result)
                 lista_ingredienti = list(set(result["ing_principale"].to_list()))
-            if len(lista_ingredienti) >0: slot_ingredienti = ", ".join(lista_ingredienti)
+            if len(lista_ingredienti) >0: slot_ingredienti = lista_ingredienti
             else:
                 dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con gli ingredienti scelti.")
                 return {"ingredienti_ricetta": None}
@@ -314,26 +316,26 @@ class ValidateRicettaForm(FormValidationAction):
                 slot_ingredienti = None
                 # dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con questo ingrediente.")
                 # return {"ingredienti_ricetta": None}
-        
+        ingr_str = ", ".join(slot_ingredienti)
         # SE L'UTENTE DA L'INGREDIENTE E LA PORTATA
         if not slot_portata == "" and slot_num_persone == "":
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti} per un {slot_portata}.")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str} per un {slot_portata}.")
             return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata, "nome_ricetta": None}
         # SE L'UTENTE DA L'INGREDIENTE LA PORTATA E IL NUMERO DI PERSONE
         elif not slot_portata == "" and not slot_num_persone == "":
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
             return {"ingredienti_ricetta": slot_ingredienti, "portata_ricetta": slot_portata, "num_persone_ricetta": slot_num_persone, "nome_ricetta": None}
         # SE L'UTENTE DA L'INGREDIENTE E IL NUMERO DI PERSONE
         elif slot_portata == "" and not slot_num_persone == "":
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per {slot_num_persone} persone.")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}, per {slot_num_persone} persone.")
             return {"ingredienti_ricetta": slot_ingredienti, "num_persone_ricetta": slot_num_persone, "nome_ricetta": None}
          # SE L'UTENTE DA L'INGREDIENTE E IL NUMERO DI PERSONE
-        elif not slot_portata == "" and slot_ingredienti == "":
+        elif not slot_portata == "" and slot_ingredienti == []:
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta per un {slot_portata}.")
             return {"ingredienti_ricetta": slot_ingredienti, "num_persone_ricetta": slot_num_persone, "nome_ricetta": None}
         # SE L'UTENTE DA L'INGREDIENTE
         if not slot_ingredienti == None:
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}.")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}.")
             return {"ingredienti_ricetta": slot_ingredienti, "nome_ricetta": None}
 
         dispatcher.utter_message(text=f"Inserisca almeno un termine di ricerca, grazie!")
@@ -348,6 +350,7 @@ class ValidateRicettaForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate `portata_ricetta` value."""
         print(slot_value)
+        print("sono qui")
         if slot_value not in portate_possibili:
             correct_word = difflib.get_close_matches(slot_value,portate_possibili, n=1, cutoff=0.6)
             if not correct_word:       
@@ -359,10 +362,11 @@ class ValidateRicettaForm(FormValidationAction):
         slot_portata = slot_value
         slot_num_persone = tracker.get_slot("num_persone_ricetta")
         slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
-
+        print("ingredienti:",slot_ingredienti)
+        ingr_str = ", ".join(slot_ingredienti)
         #dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_value}.")
         if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
         else:
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_portata}.")
         return {"portata_ricetta": slot_value, "nome_ricetta": None}
@@ -393,9 +397,9 @@ class ValidateRicettaForm(FormValidationAction):
         slot_num_persone = slot_value
         slot_portata = tracker.get_slot("portata_ricetta")
         slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
-         
+        ingr_str = ", ".join(slot_ingredienti)
         if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
-            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {slot_ingredienti}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
+            dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
         else:
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta per {slot_num_persone} persone.")
         return {"num_persone_ricetta": slot_num_persone, "nome_ricetta": None}
@@ -482,10 +486,10 @@ class ActionCreazioneRicette(Action):
             ricette = pd.DataFrame()
             output = ""
             if ingredienti_slot != None:
-                ingredienti_slot_l = str(ingredienti_slot).split(", ")
+                ingredienti_slot_l = ingredienti_slot
                 if len(ingredienti_slot_l) == 1:
                     # ricerca di Meeett
-                    ricette = df_recipe[df_recipe['ing_principale'].str.lower().str.contains(ingredienti_slot.lower(),regex=False)].reset_index()
+                    ricette = df_recipe[df_recipe['ing_principale'].str.lower().str.contains(ingredienti_slot[0].lower(),regex=False)].reset_index()
                 else:
                     # ricerca di Simone
                     slot_portata = tracker.get_slot("portata_ricetta")

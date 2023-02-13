@@ -248,7 +248,7 @@ slots:
       
   
   ingredienti_ricetta:
-    type: text
+    type: list
     influence_conversation: true
     mappings:
       - type: from_entity

@@ -183,6 +183,8 @@ nlu:
     - quit
     - close
     - chiudi
+    - annulla operazione
+    - annulla
     - stop
     - /stop
 
@@ -271,7 +273,6 @@ nlu:
     - [insalata, formaggio](ingredienti_ricetta) 
 
 
-
 - intent: change_choices
   examples: |
     - Si vorrei cambiare
@@ -303,6 +304,9 @@ nlu:
     - Ho intenzione di cucinare il [pollo arrosto](nome_ricetta)
     - ricetta [torta al cioccolato](nome_ricetta)
     - ricetta: [piadina](nome_ricetta)
+    - [piadina](nome_ricetta)
+    - [pasta rossa](nome_ricetta)
+    - [tagliatelle al sugo](nome_ricetta) 
 
 - intent: ricerca_random
   examples: |

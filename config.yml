@@ -11,15 +11,7 @@ pipeline:
 # # If you'd like to customize it, uncomment and adjust the pipeline.
 # # See https://rasa.com/docs/rasa/tuning-your-model for more information.
   - name: WhitespaceTokenizer
-  - name: RegexFeaturizer
-  - name: "CRFEntityExtractor"
-    entities:
-    - name: ingredienti_ricetta
-      lookup_tables:
-      - name: ingredienti_ricetta
-        elements:
-          ./lookup_table_ingredienti.txt
-  
+  - name: RegexFeaturizer  
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: CountVectorsFeaturizer
@@ -30,7 +22,8 @@ pipeline:
     epochs: 100
     constrain_similarities: true
   - name: EntitySynonymMapper
-  - name: RegexEntityExtractor
+  - name: RegexEntityExtractor 
+    use_lookup_tables: true
   - name: ResponseSelector
     epochs: 100
     constrain_similarities: true
