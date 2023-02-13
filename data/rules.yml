@@ -71,3 +71,9 @@ rules:
   - intent: ricercaPerPortata
   - action: action_ricercaPortata
   - action: utter_did_that_help
+
+- rule: Scelta secondo
+  steps:
+  - intent: scelta_secondo
+  - action: utter_submit_menu
+  - action: action_crea_menu

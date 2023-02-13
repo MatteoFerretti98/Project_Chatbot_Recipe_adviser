@@ -61,7 +61,9 @@ stories:
   - intent: chiedi_menu
   - action: utter_menu
   - intent: scelta_portata
+  - action: action_crea_menu
   - intent: scelta_secondo
+  - action: utter_submit_menu
   - action: action_crea_menu
 
 

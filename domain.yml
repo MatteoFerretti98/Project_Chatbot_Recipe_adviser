@@ -22,10 +22,17 @@ intents:
   - cerca_ricetta
   - change_choices
   - cerca_nome
-  - scelta_portata
-  - scelta_secondo
   - chiedi_menu
   - ricerca_random
+
+  - scelta_secondo:
+      use_entities: 
+        - secondo
+
+  - scelta_portata:
+      use_entities: 
+        - portate
+
   - cerca_per_nome:
       use_entities: 
         - nome_ricetta
@@ -60,6 +67,7 @@ actions:
   - utter_menu
   - action_crea_menu
   - action_ricetta_random
+  - utter_submit_menu
 
 
 entities:
@@ -78,15 +86,12 @@ entities:
 
 responses:
   utter_start:
-    - custom:
-        blocks:
-          - text: "Ciao mi chiamo <b>Recipe Adviser</b>, il miglior bot per la consulenza di ricette. Come posso esserti utile? 
+  - text: "Ciao mi chiamo Recipe Adviser, il miglior bot per la consulenza di ricette. Come posso esserti utile? 
                    \n
                    \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
-          - text: "Ciao sono <b>Recipe Adviser</b>, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! 
+  - text: "Ciao sono Recipe Adviser, hai bisogno di una ricetta? Eccomi qui in tuo aiuto! 
                    \n
                    \nPer maggiori informazioni sul mio utilizzo digita il comando /help."
-          - parse_mode: "Markdown"
 
 
   utter_menu:
@@ -103,11 +108,11 @@ responses:
   utter_help:
   - text: "Puoi utilizzare uno dei seguenti comandi per interagire con me:
           \n
-          \n-**Vorrei cercare una ricetta**: per comporre la tua ricetta con ingredienti, tipo di portata e numero di persone.
+          \n-Vorrei cercare una ricetta: per comporre la tua ricetta con ingredienti, tipo di portata e numero di persone.
           \n
-          \n-**Vorrei cercare una ricetta per nome**: per cercare una ricetta direttamente con il suo nome.
+          \n-Vorrei cercare una ricetta per nome: per cercare una ricetta direttamente con il suo nome.
           \n
-          \n-**Dimmi una ricetta casuale**: per chiedermi di mandarti una ricetta a mia scelta tra le tante che conosco."
+          \n-Dimmi una ricetta casuale: per chiedermi di mandarti una ricetta a mia scelta tra le tante che conosco."
 
   utter_greet:
   - text: "Ciao! Come stai?"
@@ -148,6 +153,9 @@ responses:
 
   utter_submit:
   - text: Ricerca ricetta in corso...
+
+  utter_submit_menu:
+  - text: Creazione menù in corso...
 
   utter_ask_continue:
   - text: Sei sicuro di non voler interrompere la ricerca?
