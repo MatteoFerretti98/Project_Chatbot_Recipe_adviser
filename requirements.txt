@@ -5,3 +5,4 @@ pandas==1.5.1
 python-dotenv==0.21.1
 rasa_sdk==3.4.0
 spacy==3.5.0
+https://huggingface.co/spacy/it_core_news_sm/resolve/main/it_core_news_sm-any-py3-none-any.whl
