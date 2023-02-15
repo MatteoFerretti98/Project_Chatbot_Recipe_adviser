@@ -16,7 +16,9 @@ L'obiettivo del progetto è stato quello di realizzare un ChatBot utilizzando il
 git clone https://github.com/MatteoFerretti98/Project_Chatbot_Recipe_adviser.git
 ```
 **• Installare la versione 3 di Python**
+
 **• Creare un ambiente virtuale e installazione delle dipendenze tramite il file requirements.txt:**
+
 Questo è possibile farlo utilizzando 2 modi:
 
   1) Utilizzando anaconda:
