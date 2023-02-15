@@ -70,7 +70,8 @@ Eseguite queste operazioni, si può lanciare il comando nel **terminale 3**:
 rasa run
 ```
   - Utilizzarlo da linea di comando:
-  In questo caso serve semplicemente lanciare il seguente comando nel **terminale 2**: (N.B. le immagini non saranno visualizzate):
+  
+  In questo caso serve semplicemente lanciare il seguente comando nel **terminale 2** (le immagini non saranno visualizzate in questo caso):
   
 ```bash
 rasa shell
