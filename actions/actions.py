@@ -179,6 +179,16 @@ list_parole_da_escludere.append('ingredienti')
 list_parole_da_escludere.append('persone')
 list_parole_da_escludere.append('nome')
 
+list_parole_da_escludere_con_carne = df_recipe["tipo"].tolist()
+list_parole_da_escludere_con_carne = list(set(list_parole_da_escludere))
+list_parole_da_escludere_con_carne = all_lower(list_parole_da_escludere)
+list_parole_da_escludere_con_carne.append('ricetta')
+list_parole_da_escludere_con_carne.append('ingrediente')
+list_parole_da_escludere_con_carne.append('ingredienti')
+list_parole_da_escludere_con_carne.append('persone')
+list_parole_da_escludere_con_carne.append('nome')
+list_parole_da_escludere_con_carne.append('carne')
+
 buttons = [{
             "title": "Carne", 
             "payload": '/scelta_secondo{"secondo":"ca"}'
@@ -250,8 +260,12 @@ class ValidateRicettaForm(FormValidationAction):
         list_ingredienti_word = []
 
         # RICERCA DELLE PAROLE CHIAVE (NOMI, AGGETTIVI ECC.) PER LA RICERCA DELL'INGREDIENTE, DELLA PORTATA E DEL NUMERO DI PERSONE
+        if tracker.get_slot("ingredienti_ricetta") == None:
+            lista_esclusioni = list_parole_da_escludere
+        else:
+            lista_esclusioni = list_parole_da_escludere_con_carne
         for token in doc:
-            if token.text.lower() in list_parole_da_escludere:
+            if token.text.lower() in lista_esclusioni:
                 if token.text.lower() in portate_possibili:
                     slot_portata = token.text.lower()
                 continue
@@ -268,6 +282,7 @@ class ValidateRicettaForm(FormValidationAction):
         print("Lista delle stringhe che ci aiutano a trovare l'ingrediente: " + str(list_ingredienti_word))
         syntax_divisions = [(token.text, token.pos_) for token in doc]
         print("La divisione della sintassi: " + str(syntax_divisions))
+
         list_ingredienti_word = list(set(map(str.lower, slot_value + list_ingredienti_word)))
         
         if len(list_ingredienti_word) > 1: # se l'utente ha inserito più di un ingrediente
@@ -300,15 +315,13 @@ class ValidateRicettaForm(FormValidationAction):
             if len(result) > 0:    
                 lista_ing = set(result["ing_principale"].to_list())
                 lista_ingredienti = list(lista_ing)
-                
-                if len(lista_ingredienti) >0 : slot_ingredienti = random.choice(lista_ingredienti)
+                if len(lista_ingredienti) >0 : slot_ingredienti = [random.choice(lista_ingredienti)]
                 else:
                     lista_parole_corrette = correct_words(list_ingredienti_word)
-                    print(lista_parole_corrette)
                     result = self.find_rows(lista_parole_corrette, df_recipe,"ing_principale")
                     print(result)
                     lista_ingredienti = list(set(result["ing_principale"].to_list()))
-                    if len(lista_ingredienti) >0: slot_ingredienti = random.choice(lista_ingredienti)
+                    if len(lista_ingredienti) >0: slot_ingredienti = [random.choice(lista_ingredienti)]
                     else:
                         dispatcher.utter_message(text=f"Mi dispiace ma non ho trovato nessuna ricetta con questo ingrediente.")
                         return {"ingredienti_ricetta": None}
@@ -488,8 +501,10 @@ class ActionCreazioneRicette(Action):
             if ingredienti_slot != None:
                 ingredienti_slot_l = ingredienti_slot
                 if len(ingredienti_slot_l) == 1:
+                    print(len(ingredienti_slot_l))
                     # ricerca di Meeett
                     ricette = df_recipe[df_recipe['ing_principale'].str.lower().str.contains(ingredienti_slot[0].lower(),regex=False)].reset_index()
+
                 else:
                     # ricerca di Simone
                     slot_portata = tracker.get_slot("portata_ricetta")
@@ -511,20 +526,27 @@ class ActionCreazioneRicette(Action):
                 ricette = ricette[ricette['tipo'].str.lower().str.contains(portata_slot.lower(),regex=False)].reset_index()
             if tracker.get_slot("num_persone_ricetta") != None:
                 ricette_n_persone = ricette
+                
+                if len(ricette_n_persone.loc[ricette_n_persone['n_persone'] == str(num_persone_slot)]) < 2:
+                    ricette_n_persone = ricette_n_persone.sample(2)
+                else:
+                    ricette_n_persone = ricette_n_persone.loc[ricette_n_persone['n_persone'] == str(num_persone_slot)].head(2)
 
                 if len(ricette) == 0:
                     output = "Non ci sono ricette con queste caratteristiche."
                     dispatcher.utter_message(text=output)
                     return [AllSlotsReset()]
                 print(ricette_n_persone)
-                n_persone_trovato = ricette_n_persone.at[0,"n_persone"]
-                if num_persone_slot != n_persone_trovato:
+                if int(num_persone_slot) not in ricette_n_persone["n_persone"].to_list():
                     output += "Non è stata trovata una ricetta con il numero di persone scelto. \n"
                     output += "Proverò comunque a cercare una ricetta ;). \n"
                     dispatcher.utter_message(text=output)
                     output = ""
                 
+                
+
                 ricette = ricette_n_persone
+
             if len(ricette)==0 : 
                 output = "Non ci sono ricette con queste caratteristiche."
                 dispatcher.utter_message(text=output)

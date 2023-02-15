@@ -112,7 +112,9 @@ responses:
           \n
           \n-Vorrei cercare una ricetta per nome: per cercare una ricetta direttamente con il suo nome.
           \n
-          \n-Dimmi una ricetta casuale: per chiedermi di mandarti una ricetta a mia scelta tra le tante che conosco."
+          \n-Dimmi una ricetta casuale: per chiedermi di mandarti una ricetta a mia scelta tra le tante che conosco.
+          \n
+          \n-Vorrei creare un menu: per chiedermi di creare un menù con un numero di portate a tua scelta."
 
   utter_greet:
   - text: "Ciao! Come stai?"

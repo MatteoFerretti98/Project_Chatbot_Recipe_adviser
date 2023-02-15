@@ -1176,10 +1176,20 @@ nlu:
       - Scamone Di Manzo- Controfiletto Di Manzo- Aglio In Polvere- Spinaci Freschi Ben Lavati
       - Carote Pulite Tagliate Per Il Lungo
       - Uova Sode Tagliate In 4 Per Il Lungo
-      - Cipolla Tagliata- Girello Di Manzo- Erbe Odorose- Sottocoscia Di Tacchino Disossato- Spezie Varie Per Carne- Speck A Fette Non Troppo Sottili
-      - Fesa Di Tacchino Arrotolata- Uva Nera
+      - Cipolla Tagliata
+      - Girello Di Manzo
+      - Erbe Odorose
+      - Sottocoscia Di Tacchino Disossato
+      - Spezie Varie Per Carne
+      - Speck A Fette Non Troppo Sottili
+      - Fesa Di Tacchino Arrotolata
+      - Uva Nera
       - Carote Piccole Tenere
-      - Meloncino- Fesa Di Tacchino (pezzi Da 800 G)- Burro Fresco- Latte Parzialmente Scremato- Pancetta Stesa
+      - Meloncino
+      - Fesa Di Tacchino (pezzi Da 800 G)
+      - Burro Fresco
+      - Latte Parzialmente Scremato
+      - Pancetta Stesa
       - Carne Di Vitella
       - Latte Intero- Vitello
       - Pancetta A Strisce
@@ -1230,7 +1240,8 @@ nlu:
       - Marroni
       - Asparagi Verdi (800 G)- Burro Di Panna Pastorizzata
       - Formaggio Camembert
-      - Burro Fuso- Besciamella
+      - Burro Fuso
+      - Besciamella
       - Formaggio Caciocavallo Podolico Stagionato
       - Asparagi (mazzi Da 1000 G)- Prosciutto Cotto Tagliato A Fette
       - Maionese Di 2 Uova- Carota Lessata
@@ -3124,7 +3135,6 @@ nlu:
       - Tè Szechuan
       - Tè Ching Wo
       - Pasta Tipo Chiocciole- Pasta Tipo Chioccioline- Sherry Fino Maniero
-      - Carne
       - Bouquet Di Coriandolo Fresco E Prezzemolo
       - Bulghur (grano Spezzato)
       - Carne Di Montone
