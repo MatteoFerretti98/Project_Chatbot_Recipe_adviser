@@ -1,0 +1,7 @@
+google_search_results==2.4.1
+num2words==0.5.12
+openai==0.26.5
+pandas==1.5.1
+python-dotenv==0.21.1
+rasa_sdk==3.4.0
+spacy==3.5.0

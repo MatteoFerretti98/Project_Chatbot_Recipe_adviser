@@ -360,7 +360,3 @@ nlu:
     - pollame
     - primo
     - salsa
-
-lookup_tables: ingredienti_ricetta
-    ./lookup_table_ingredienti.txt
-

@@ -22,10 +22,12 @@ from num2words import num2words
 from rasa_sdk.events import AllSlotsReset
 import openai
 from serpapi import GoogleSearch
+import os
+from dotenv import load_dotenv
 
-
-
-openai.api_key = "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"
+#caricamento della chiave di SERPAPI
+load_dotenv()
+SERPAPI_API_KEY = os.getenv('SERPAPI_KEY')
 
 dict_portate ={ "a":"antipasto","p":"primo","s":"secondo","c":"contorno","d": "dessert","ca":"Carne","po":"Pollame","pe":"Pesce"}
 
@@ -45,12 +47,13 @@ def word_in_string(word_list, string):
     return count
 
 
-def generate_image(nome_ricetta):
+def generate_image(nome_ricetta,tipo):
+    if tipo=="Bevande": tipo="cocktail"
     params = {
-        "q": "ricetta " + str(nome_ricetta),
+        "q": "ricetta " + tipo + " " + str(nome_ricetta),
         "tbm": "isch",
         "ijn": 0,
-        "api_key": "e328f794d5ac4118e260de595b26f0042e14b5418c0c4e60a2129b0446c33610"
+        "api_key": SERPAPI_API_KEY.strip()
     }    
     search = GoogleSearch(params)
     link = search.get_dict()['images_results'][0]["original"]
@@ -110,7 +113,7 @@ def buildResponse(df,dispatcher):
         for index, row in df.iterrows():
             t = "persone"
             if row['n_persone'] == 1: t = "persona"
-            dispatcher.utter_message(image=generate_image(row['nome']))
+            dispatcher.utter_message(image=generate_image(row['nome'],str(row["tipo"])))
             output += "  \n \n"
             output += f"<b>{str(row['nome']).upper()}</b> \n \n"
             output += f"<b>Tipo di piatto:</b> {row['tipo']} \n"
