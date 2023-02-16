@@ -24,6 +24,11 @@ def ing_q_cal(l):
             l.append(el[0])
     return l
 
+def getter(x):
+    return pd.Series(dict( quantita = "{%s}" % ', '.join(x['quantita']), 
+                        nome_ingrediente = "{%s}" % ', '.join(x['nome_ingrediente']),
+                        calorie = x['calorie'].sum()))
+
 # INIZIALIZZAZIONI VARIABILI
 tot_len = 0
 id_ricetta = 0
@@ -108,13 +113,10 @@ with open(INPUT_DIR+'ricette.txt') as f:
             continue
 
 # generazione dataframe ricette
-df = pd.DataFrame(row, columns=['id_ricetta','nome','tipo','ing_principale','n_persone','note','preparazione'])
+df_ricette = pd.DataFrame(row, columns=['id_ricetta','nome','tipo','ing_principale','n_persone','note','preparazione'])
 
-df =df.mask(df == '')
-df["ing_principale"] = df["ing_principale"].fillna("non specificato")
-
-# salvataggio del dataset nella cartella specificata in OUTPUT_DIR
-df.to_csv(OUTPUT_DIR + "ricette.csv",index=False)
+df_ricette =df_ricette.mask(df_ricette == '')
+df_ricette["ing_principale"] = df_ricette["ing_principale"].fillna("non specificato")
 
 # Gli ingredienti delle ricette sono salvati su un dizionario che contiene :
 # key -> id_ricetta ; value -> lista di coppie [nome_ingrediente, quantità]
@@ -157,8 +159,19 @@ df_ingredienti_cal = pd.DataFrame(data_ing_cal, columns=["nome_ingrediente", "qu
 df_ingredienti_cal = df_ingredienti.merge(df_ingredienti_cal,on=["nome_ingrediente","quantita"],how='left')
 df_ingredienti_cal['quantita'] = df_ingredienti_cal['quantita'].replace("0","q.b.")
 df_ingredienti_cal['calorie'] = df_ingredienti_cal['calorie'].fillna(16)
-df_ingredienti_cal.to_csv(OUTPUT_DIR+"ingredienti.csv",index=False)
 df_ingredienti_cal = df_ingredienti_cal.drop_duplicates()
+
+df_ingredienti_cal.to_csv(OUTPUT_DIR+"ingredienti.csv",index=False)
+
+df_ingredienti_cal = pd.read_csv(OUTPUT_DIR+"ingredienti.csv")
+df_union = df_ingredienti_cal.groupby('id_ricetta').apply(getter).reset_index()
+
+df_ricette = pd.merge(left = df_ricette, right = df_union, on = 'id_ricetta', how = 'right')
+df_ricette = df_ricette.dropna(axis='index', how='any')
+
+# salvataggio del dataset nella cartella specificata in OUTPUT_DIR
+df_ricette.to_csv(OUTPUT_DIR + "ricette.csv",index=False)
+df_ingredienti_cal.to_csv(OUTPUT_DIR+"ingredienti.csv",index=False)
 
 print("## CREAZIONE DATASET AVVENUTA CON SUCCESSO NELLA CARTELLA:", OUTPUT_DIR, "##")
 print("credit DB: www.dbricette.it")
