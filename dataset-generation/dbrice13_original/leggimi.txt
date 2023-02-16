@@ -1,0 +1,58 @@
+Nome del programma .............. DBRICETTE
+
+Versione ........................ 1.3.28200
+
+Data ............................ 29-12-2015
+
+Autore .......................... Giorgio Musilli
+                                  Via Colle Di Fionda, 10
+                                  03044 Cervaro (FR)
+
+Sito ............................ www.dbricette.it
+                                  www.didattica.org
+
+Descrizione ..................... DATABASE CON 28200 RICETTE. FUNZIONI DI RICERCA
+                                  E CALCOLO DELLE CALORIE (43865 INGREDIENTI DEFINITI).
+                                  POSSIBILITÀ DI AGGIUNGERE IMMAGINI DEI PIATTI.
+                                  NOTE:
+                                  1. RICERCA PER INGREDIENTI: LA RICERCA AVVIENE
+                                  EFFETTIVAMENTE SUGLI INGREDIENTI E NON ANCHE SULLE
+                                  QUANTITA'; LA RICERCA È PROGRESSIVA: UNA VOLTA FATTA
+                                  LA PRIMA RICERCA, LA RICERCA SUCCESSIVA VIENE FATTA
+                                  SOLO SULLE RICETTE INDIVIDUATE NELLA PRIMA RICERCA E
+                                  COSÌ VIA; PER AZZERARE E RIPARTIRE DA CAPO NELLE
+                                  RICERCHE CLICCARE SU "RESET".
+                                  2. CALCOLO DELLE CALORIE: IL CALCOLO DELLE CALORIE È
+                                  TOTALMENTE AUTOMATICO; LE CALORIE SONO INDICATE PER
+                                  PERSONA: VARIANDO IL NUMERO DELLE PERSONE, LE CALORIE
+                                  SARANNO RICALCOLATE.
+                                  3. FOTO: PER AGGIUNGERE FOTO DELLE RICETTE, INSERIRE
+                                  LE IMMAGINI .JPG NELLA DIRECTORY IMMAGINI NEL
+                                  SEGUENTE FORMATO: Titolo Della Ricetta.jpg
+                                  [RISPETTARE MAIUSCOLE E SPAZI].
+                                  4. LENTEZZA: A CAUSA DELLA GRANDEZZA DEGLI ARCHIVI,
+                                  IL PROGRAMMA È UN PO' LENTO, SOPRATTUTTO NELLE
+                                  RICERCHE; CIÒ COMUNQUE È COMPENSATO DALL'ACCURATEZZA
+                                  DEI RISULTATI.
+                                  5. È POSSIBILE STAMPARE IN VARIE GRANDEZZE LA
+                                  RICETTA VISUALIZZATA.
+
+Obiettivo didattico ............. 
+
+Accessibilita' ..................
+
+Caratteristiche tecniche ........ Creato con Delphi 6.0 Personal
+                                  Per Windows 95/98/ME/XP
+
+Note di copyright ............... Programma originale di Giorgio Musilli
+                                  Archivi inseriti da Giorgio Musilli
+
+Licenza d'uso ................... Licenza Creative Commons
+
+
+NOTE SULLA LICENZA D'USO
+Il software è pubblicato sotto una Licenza Creative Commons.
+    * Devi attribuire la paternità dell'opera nei modi indicati dall'autore.
+    * Non puoi usare quest'opera per fini commerciali.
+    * Non puoi alterare o trasformare quest'opera, ne' usarla per crearne un'altra.
+    * Gli archivi non possono essere usati in altri programmi senza il consenso dell'autore.

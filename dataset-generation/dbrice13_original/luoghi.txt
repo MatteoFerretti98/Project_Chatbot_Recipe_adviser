@@ -1,0 +1,243 @@
+Luogo: Abruzzo.
+Luogo: Acquafondata.
+Luogo: Afghanistan.
+Luogo: Africa.
+Luogo: Agrigento.
+Luogo: Alatri.
+Luogo: Alba.
+Luogo: Albania.
+Luogo: Alessandria.
+Luogo: Algeria.
+Luogo: Altamura.
+Luogo: Alto Adige.
+Luogo: Amalfi.
+Luogo: Ancona.
+Luogo: Andalusia.
+Luogo: Antrodoco.
+Luogo: Aosta.
+Luogo: Arce.
+Luogo: Arezzo.
+Luogo: Argentina.
+Luogo: Armenia.
+Luogo: Ascoli Piceno.
+Luogo: Asti.
+Luogo: Austria.
+Luogo: Bangladesh.
+Luogo: Bari.
+Luogo: Basilicata.
+Luogo: Belgio.
+Luogo: Bengala.
+Luogo: Bergamo.
+Luogo: Biella.
+Luogo: Bologna.
+Luogo: Bolsena.
+Luogo: Brasile.
+Luogo: Bretagna.
+Luogo: Brindisi.
+Luogo: Bulgaria.
+Luogo: Cagliari.
+Luogo: Calabria
+Luogo: Calabria.
+Luogo: California.
+Luogo: Caloforte.
+Luogo: Caltanissetta.
+Luogo: Campania.
+Luogo: Campobasso.
+Luogo: Canada.
+Luogo: Canton Ticino.
+Luogo: Caraibi.
+Luogo: Catalogna.
+Luogo: Catania.
+Luogo: Catanzaro.
+Luogo: Cervaro.
+Luogo: Cina.
+Luogo: Ciociaria.
+Luogo: Cividale Del Friuli.
+Luogo: Civitavecchia.
+Luogo: Colfelice.
+Luogo: Colombia
+Luogo: Colombia.
+Luogo: Como.
+Luogo: Corea.
+Luogo: Cosenza.
+Luogo: Costa Rica.
+Luogo: Creta.
+Luogo: Cuba.
+Luogo: Dacia.
+Luogo: Danimarca.
+Luogo: Dresda.
+Luogo: Egitto.
+Luogo: Emilia-Romagna.
+Luogo: Enna.
+Luogo: Etiopia.
+Luogo: Fano.
+Luogo: Ferrara.
+Luogo: Fiandre.
+Luogo: Finlandia.
+Luogo: Firenze.
+Luogo: Francia.
+Luogo: Friuli.
+Luogo: Galizia.
+Luogo: Galles.
+Luogo: Genova.
+Luogo: Germania.
+Luogo: Giamaica.
+Luogo: Giappone.
+Luogo: Grecia.
+Luogo: Grosseto.
+Luogo: Guarcino.
+Luogo: Haiti.
+Luogo: Imperia.
+Luogo: India.
+Luogo: Indonesia.
+Luogo: Inghilterra.
+Luogo: Iran.
+Luogo: Irlanda.
+Luogo: Ischia.
+Luogo: Islanda.
+Luogo: Isole Baleari.
+Luogo: Isole Eolie.
+Luogo: Isole Hawaii.
+Luogo: Israele.
+Luogo: Jugoslavia.
+Luogo: Kenya.
+Luogo: La Spezia.
+Luogo: Lazio.
+Luogo: Lecco.
+Luogo: Libano.
+Luogo: Liguria.
+Luogo: Linguria.
+Luogo: Lione.
+Luogo: Litorale tirrenico.
+Luogo: Lituania.
+Luogo: Livorno.
+Luogo: Lodi.
+Luogo: Lombardia.
+Luogo: Lucania.
+Luogo: Lucca.
+Luogo: Lugano.
+Luogo: Lussemburgo.
+Luogo: Madagascar.
+Luogo: Madrid.
+Luogo: Malawi.
+Luogo: Malta.
+Luogo: Mantova.
+Luogo: Marche.
+Luogo: Marocco.
+Luogo: Marsiglia.
+Luogo: Matera.
+Luogo: Medio Oriente.
+Luogo: Melanesia.
+Luogo: Messico.
+Luogo: Messina.
+Luogo: Milano.
+Luogo: Modena.
+Luogo: Modica.
+Luogo: Moiano.
+Luogo: Molise.
+Luogo: Montefeltro.
+Luogo: Napoli.
+Luogo: Nizza.
+Luogo: Norcia.
+Luogo: Normandia.
+Luogo: Norvegia.
+Luogo: Nuoro.
+Luogo: Nuovo Messico.
+Luogo: Olanda.
+Luogo: Orvieto.
+Luogo: Ozieri.
+Luogo: Padova.
+Luogo: Palermo.
+Luogo: Palinuro.
+Luogo: Parigi.
+Luogo: Parma.
+Luogo: Pavia.
+Luogo: Perù.
+Luogo: Perugia.
+Luogo: Piacenza.
+Luogo: Piemonte.
+Luogo: Pisa.
+Luogo: Pistoia.
+Luogo: Polinesia.
+Luogo: Polonia.
+Luogo: Portogallo.
+Luogo: Provenza.
+Luogo: Puglia.
+Luogo: Ragusa.
+Luogo: Ravenna.
+Luogo: Recco.
+Luogo: Reggio Calabria.
+Luogo: Reggio Emilia.
+Luogo: Regno Unito.
+Luogo: Renania Del Nord.
+Luogo: Repubblica Ceca.
+Luogo: Rieti.
+Luogo: Roccasecca.
+Luogo: Roma.
+Luogo: Romania.
+Luogo: Roseto Degli Abruzzi.
+Luogo: Russia.
+Luogo: Sabina.
+Luogo: San Benedetto Del Tronto.
+Luogo: Sanremo.
+Luogo: Sardegna.
+Luogo: Savona.
+Luogo: Scandriglia.
+Luogo: Scozia.
+Luogo: Senegal.
+Luogo: Senigallia.
+Luogo: Sicilia.
+Luogo: Siena.
+Luogo: Sierra Leone.
+Luogo: Siracusa.
+Luogo: Slovacchia.
+Luogo: Sondrio.
+Luogo: Sorrento.
+Luogo: Spagna.
+Luogo: Sri Lanka.
+Luogo: Stati Uniti.
+Luogo: Sudafrica.
+Luogo: Sudamerica.
+Luogo: Sulmona.
+Luogo: Svezia.
+Luogo: Svizzera.
+Luogo: Taranto.
+Luogo: Teramo.
+Luogo: Terni.
+Luogo: Terracina.
+Luogo: Thailandia.
+Luogo: Torano.
+Luogo: Torino.
+Luogo: Toscana.
+Luogo: Trapani.
+Luogo: Trebisacce.
+Luogo: Trentino-Alto Adige.
+Luogo: Trentino.
+Luogo: Trento.
+Luogo: Treviso.
+Luogo: Trieste.
+Luogo: Tunisia.
+Luogo: Turchia.
+Luogo: Turingia.
+Luogo: Tuscia.
+Luogo: Umbria.
+Luogo: Ungheria.
+Luogo: Val D'Aosta.
+Luogo: Valencia.
+Luogo: Valtellina.
+Luogo: Vanuatu.
+Luogo: Veneto.
+Luogo: Venezia.
+Luogo: Venezuela.
+Luogo: Verbano-Cusio-Ossola.
+Luogo: Vercelli.
+Luogo: Verona.
+Luogo: Versilia.
+Luogo: Viareggio.
+Luogo: Vicenza.
+Luogo: Vico Nel Lazio.
+Luogo: Vienna.
+Luogo: Vietnam.
+Luogo: Viterbo.
+Luogo: Westfalia.
+Luogo: Zimbabwe.
