@@ -113,7 +113,7 @@ def buildResponse(df,dispatcher):
         for index, row in df.iterrows():
             t = "persone"
             if row['n_persone'] == 1: t = "persona"
-            dispatcher.utter_message(image=generate_image(row['nome'],str(row["tipo"])))
+            #dispatcher.utter_message(image=generate_image(row['nome'],str(row["tipo"])))
             output += "  \n \n"
             output += f"<b>{str(row['nome']).upper()}</b> \n \n"
             output += f"<b>Tipo di piatto:</b> {row['tipo']} \n"
@@ -255,10 +255,7 @@ class ValidateRicettaForm(FormValidationAction):
 
         # ANALISI NLP SINTASSI
         doc = nlp(tracker.latest_message["text"])
-        print(tracker.slots)
-        print(slot_value)
 
-        print(tracker.latest_message["text"])
         # LISTA VUOTA PER LE PAROLE TROVATE DALLA SINTASSI
         list_ingredienti_word = []
 
@@ -276,15 +273,6 @@ class ValidateRicettaForm(FormValidationAction):
                 slot_num_persone = token.text.lower()
             if token.pos_ == 'NOUN' or token.pos_ == 'PROPN' or token.pos_ == 'ADV' or token.pos_ == 'ADJ':
                 list_ingredienti_word.append(token.text.lower())
-
-        #portata = str(tracker.get_slot('portata_ricetta'))
-        print(slot_portata)
-        print(list_ingredienti_word)
-
-        # PRINTI DELLA SINTASSI DELLE STRINGHE
-        print("Lista delle stringhe che ci aiutano a trovare l'ingrediente: " + str(list_ingredienti_word))
-        syntax_divisions = [(token.text, token.pos_) for token in doc]
-        print("La divisione della sintassi: " + str(syntax_divisions))
 
         list_ingredienti_word = list(set(map(str.lower, slot_value + list_ingredienti_word)))
         
@@ -304,9 +292,7 @@ class ValidateRicettaForm(FormValidationAction):
             else:
                 # si prova a correggere le parole e si ripete la ricerca
                 lista_parole_corrette = correct_words(list_ingredienti_word)
-                print(lista_parole_corrette)
                 result = filter_by_ingredients(lista_parole_corrette, filter)
-                print(result)
                 lista_ingredienti = list(set(result["ing_principale"].to_list()))
             if len(lista_ingredienti) >0: slot_ingredienti = lista_ingredienti
             else:
@@ -322,7 +308,6 @@ class ValidateRicettaForm(FormValidationAction):
                 else:
                     lista_parole_corrette = correct_words(list_ingredienti_word)
                     result = self.find_rows(lista_parole_corrette, df_recipe,"ing_principale")
-                    print(result)
                     lista_ingredienti = list(set(result["ing_principale"].to_list()))
                     if len(lista_ingredienti) >0: slot_ingredienti = [random.choice(lista_ingredienti)]
                     else:
@@ -365,8 +350,6 @@ class ValidateRicettaForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate `portata_ricetta` value."""
-        print(slot_value)
-        print("sono qui")
         if slot_value not in portate_possibili:
             correct_word = difflib.get_close_matches(slot_value,portate_possibili, n=1, cutoff=0.6)
             if not correct_word:       
@@ -378,7 +361,7 @@ class ValidateRicettaForm(FormValidationAction):
         slot_portata = slot_value
         slot_num_persone = tracker.get_slot("num_persone_ricetta")
         slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
-        print("ingredienti:",slot_ingredienti)
+        #print("ingredienti:",slot_ingredienti)
         ingr_str = ", ".join(slot_ingredienti)
         #dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_value}.")
         if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
@@ -395,7 +378,6 @@ class ValidateRicettaForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate `num_persone_ricetta` value."""
-        print(slot_value)
         if slot_value not in num_persone_possibili:
            
             correct_word = difflib.get_close_matches(slot_value,num_persone_possibili, n=1, cutoff=0.6)
@@ -440,24 +422,22 @@ class ValidateNomeRicettaForm(FormValidationAction):
         # ANALISI NLP SINTASSI
         nome_ricetta_slot = ""
         doc = nlp(tracker.latest_message["text"])
-        print(tracker.slots)
         
         # LISTA VUOTA PER LE PAROLE TROVATE DALLA SINTASSI
         list_ricetta_word = []
-
+        lista_esclusioni = list_parole_da_escludere
         # RICERCA DELLE PAROLE CHIAVE (NOMI, AGGETTIVI ECC.) PER LA RICERCA DELL'INGREDIENTE, DELLA PORTATA E DEL NUMERO DI PERSONE
         for token in doc:
-            if token.text.lower() in list_parole_da_escludere:
-                if token.text.lower() in portate_possibili:
-                    nome_ricetta_slot = token.text.lower()
+            if token.text.lower() in lista_esclusioni:
                 continue
-            if token.pos_ == 'NOUN' or token.pos_ == 'PROPN' or token.pos_ == 'ADV' or token.pos_ == 'ADJ':
+            if token.pos_ in ['NOUN','PROPN','ADV']:
                 list_ricetta_word.append(token.text.lower())
-        
+        if len(list_ricetta_word) == 0:
+            list_ricetta_word.append(tracker.get_slot("nome_ricetta"))
         # PRINTI DELLA SINTASSI DELLE STRINGHE
-        print("Lista delle stringhe che ci aiutano a trovare la ricetta: " + str(list_ricetta_word))
+        #print("Lista delle stringhe che ci aiutano a trovare la ricetta: " + str(list_ricetta_word))
         syntax_divisions = [(token.text, token.pos_) for token in doc]
-        print("La divisione della sintassi: " + str(syntax_divisions))
+        #print("La divisione della sintassi: " + str(syntax_divisions))
 
         # RICERCA DELL'INGREDIENTE
         result = find_rows(list_ricetta_word, df_recipe,"nome")
@@ -479,12 +459,10 @@ class ActionCreazioneRicette(Action):
         return "action_ricetta"
     
     def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        print(tracker.slots)
         if tracker.get_slot("nome_ricetta") != None:
-            print("Il nome da cercare è: " + str(tracker.get_slot("nome_ricetta")))
+            #print("Il nome da cercare è: " + str(tracker.get_slot("nome_ricetta")))
             
             nome = tracker.get_slot("nome_ricetta")
-            
             ricette = df_recipe[df_recipe['nome'].str.lower().str.contains(nome.lower(),regex=False)]
             
             if len(ricette)==0 : 
@@ -497,14 +475,13 @@ class ActionCreazioneRicette(Action):
             return [AllSlotsReset()]
 
         elif tracker.get_slot("ingredienti_ricetta") != None or tracker.get_slot("portata_ricetta") != None or tracker.get_slot("num_persone_ricetta") != None:
-            print("La ricetta da cercare è con ingredienti, portata o numero di persone")
+            #print("La ricetta da cercare è con ingredienti, portata o numero di persone")
             ingredienti_slot = tracker.get_slot("ingredienti_ricetta")
             ricette = pd.DataFrame()
             output = ""
             if ingredienti_slot != None:
                 ingredienti_slot_l = ingredienti_slot
                 if len(ingredienti_slot_l) == 1:
-                    print(len(ingredienti_slot_l))
                     # ricerca di Meeett
                     ricette = df_recipe[df_recipe['ing_principale'].str.lower().str.contains(ingredienti_slot[0].lower(),regex=False)].reset_index()
 
@@ -513,9 +490,7 @@ class ActionCreazioneRicette(Action):
                     slot_portata = tracker.get_slot("portata_ricetta")
                     if slot_portata: filter = df_recipe[df_recipe['tipo'].str.lower().str.contains(slot_portata.lower())]
                     else: filter = df_recipe
-                    print(ingredienti_slot_l)
                     ricette = filter_by_ingredients(ingredienti_slot_l, filter)
-                    print(ricette)
                 
             portata_slot = tracker.get_slot("portata_ricetta")
             num_persone_slot = tracker.get_slot("num_persone_ricetta")
@@ -539,7 +514,6 @@ class ActionCreazioneRicette(Action):
                     output = "Non ci sono ricette con queste caratteristiche."
                     dispatcher.utter_message(text=output)
                     return [AllSlotsReset()]
-                print(ricette_n_persone)
                 if int(num_persone_slot) not in ricette_n_persone["n_persone"].to_list():
                     output += "Non è stata trovata una ricetta con il numero di persone scelto. \n"
                     output += "Proverò comunque a cercare una ricetta ;). \n"
@@ -569,12 +543,10 @@ class ActionCreazioneMenu(Action):
         return "action_crea_menu"
     
     def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        print(tracker.slots)
         if tracker.get_slot("portate") != None:
             portate = list(tracker.get_slot("portate"))
             if "s" in portate:
                 portate.remove("s")
-                print(portate)
                 dispatcher.utter_message(text="Quale secondo vuoi?", buttons = buttons)
                 return [SlotSet("portate", portate)]
             else:

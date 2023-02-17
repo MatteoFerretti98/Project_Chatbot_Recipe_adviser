@@ -295,7 +295,7 @@ nlu:
     - la ricetta è [coniglio](nome_ricetta)
     - vorrei la ricetta della [crepes Alle Mele](nome_ricetta)
     - il piatto che cerco è [crepes Alle Mele](nome_ricetta)
-    - il piatto da cercare è [crepes Alle Mele](nome_ricetta)
+    - il piatto da cercare è [sacher](nome_ricetta)
     - cerco la ricetta della [vitello](nome_ricetta)
     - cerco la ricetta degli [spaghetti alle vongole](nome_ricetta)
     - sono interessato alla ricetta del [bigne](nome_ricetta)
@@ -307,7 +307,9 @@ nlu:
     - [piadina](nome_ricetta)
     - [pasta rossa](nome_ricetta)
     - [tagliatelle al sugo](nome_ricetta) 
-
+    - [coniglio](nome_ricetta)
+    - [pollo con patate](nome_ricetta)
+    - [pizza](nome_ricetta)
 - intent: ricerca_random
   examples: |
     - Vorrei fare una ricerca casuale
