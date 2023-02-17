@@ -113,7 +113,7 @@ def buildResponse(df,dispatcher):
         for index, row in df.iterrows():
             t = "persone"
             if row['n_persone'] == 1: t = "persona"
-            #dispatcher.utter_message(image=generate_image(row['nome'],str(row["tipo"])))
+            dispatcher.utter_message(image=generate_image(row['nome'],str(row["tipo"])))
             output += "  \n \n"
             output += f"<b>{str(row['nome']).upper()}</b> \n \n"
             output += f"<b>Tipo di piatto:</b> {row['tipo']} \n"
