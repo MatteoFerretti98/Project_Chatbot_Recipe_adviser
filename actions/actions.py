@@ -56,7 +56,11 @@ def generate_image(nome_ricetta,tipo):
         "api_key": SERPAPI_API_KEY.strip()
     }    
     search = GoogleSearch(params)
-    link = search.get_dict()['images_results'][0]["original"]
+    try:
+        link = search.get_dict()['images_results'][0]["original"]
+    except:
+        return ""
+    
     return link
 
 def filter_by_ingredients(list_ingredienti_word,filter):    
@@ -113,7 +117,9 @@ def buildResponse(df,dispatcher):
         for index, row in df.iterrows():
             t = "persone"
             if row['n_persone'] == 1: t = "persona"
-            dispatcher.utter_message(image=generate_image(row['nome'],str(row["tipo"])))
+            immagine_url =generate_image(row['nome'],str(row["tipo"]))
+            if immagine_url != "":
+                dispatcher.utter_message(image=immagine_url)
             output += "  \n \n"
             output += f"<b>{str(row['nome']).upper()}</b> \n \n"
             output += f"<b>Tipo di piatto:</b> {row['tipo']} \n"
@@ -362,7 +368,7 @@ class ValidateRicettaForm(FormValidationAction):
         slot_num_persone = tracker.get_slot("num_persone_ricetta")
         slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
         #print("ingredienti:",slot_ingredienti)
-        ingr_str = ", ".join(slot_ingredienti)
+        if slot_ingredienti != [] and slot_ingredienti != None : ingr_str = ", ".join(slot_ingredienti)
         #dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta da {slot_value}.")
         if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
@@ -395,7 +401,7 @@ class ValidateRicettaForm(FormValidationAction):
         slot_num_persone = slot_value
         slot_portata = tracker.get_slot("portata_ricetta")
         slot_ingredienti = tracker.get_slot("ingredienti_ricetta")
-        ingr_str = ", ".join(slot_ingredienti)
+        if slot_ingredienti != [] and slot_ingredienti != None : ingr_str = ", ".join(slot_ingredienti)
         if tracker.get_slot("ingredienti_ricetta") != None and tracker.get_slot("portata_ricetta") != None and tracker.get_slot("num_persone_ricetta") != None:
             dispatcher.utter_message(text=f"Va bene! Cercherò una ricetta con {ingr_str}, per un {slot_portata}, per {slot_num_persone} persone. \n\nRicerca ricetta in corso...")
         else:
