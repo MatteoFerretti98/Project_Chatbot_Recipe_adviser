@@ -94,6 +94,7 @@ def correct_words(list_ingredienti_word):
     return lista_parole_corrette
     
 
+
 def to_dict(x):
      return Series(dict( quantita = "{%s}" % ', '.join(x['quantita']),
                         nome_ingrediente = "{%s}" % ', '.join(x['nome_ingrediente']),
